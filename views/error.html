@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include head.html %>
+    <title><%- title %></title>
+</head>
+    <body>
+        <div class="page-header">
+            <h1><%= message %> <small><%= error.status %></small></h1>
+            <pre><%= error.stack %></pre>
+        </div>
+        <%- include script.html %>
+    </body>
+</html>
