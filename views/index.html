@@ -8,5 +8,14 @@
         <h1>主页</h1>
 
         <%- include script.html %>
+        <script>
+            (function(){    //需要注意块级作用域,防止命名冲突
+                var index = io.connect('http://localhost:4000/index');
+                index.on('message', function (data) {
+                    console.log(data);
+                });
+            })();
+        </script>
     </body>
 </html>
+

@@ -1,15 +1,21 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var expressSession = require('express-session');
-var bodyParser = require('body-parser');
-var ejs = require('ejs');
-var fs = require('fs');
+var express = require('express')
+    , favicon = require('serve-favicon')
+    , logger = require('morgan')
+    , cookieParser = require('cookie-parser')
+    , expressSession = require('express-session')
+    , bodyParser = require('body-parser')
+    , ejs = require('ejs')
 
-var app = express();
+    , path = require('path')
+    , fs = require('fs')
+    , http = require('http')
 
+    , app = express()
+    , server = http.createServer(app)
+    , io = require('socket.io')(server);
+
+
+app.set('port', process.env.PORT || 4000);      //设置默认端口, 启动views
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.html',ejs.__express);
@@ -33,7 +39,7 @@ for(var i in routes){
     app.use(route, require('./server/routes/'+ name));
   }
 }
-app.use('/', require('./server/routes/login.server.route'));
+app.use('/', require('./server/routes/login.route'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -43,7 +49,6 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
@@ -69,4 +74,17 @@ app.use(function(err, req, res, next) {
 });
 
 
-module.exports = app;
+//socket.io
+require("./server/sockets")(io);
+
+
+//module.exports = app; 启动服务
+server.listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
+});
+
+
+
+
+
+

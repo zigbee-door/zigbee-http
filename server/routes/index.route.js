@@ -1,4 +1,4 @@
-var indexController = require('../controllers/index.server.controller');
+var indexController = require('../controllers/index.controller');
 var express = require('express');
 var router = express.Router();
 
