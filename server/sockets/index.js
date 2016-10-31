@@ -2,12 +2,12 @@
 module.exports = function(io) {
     //index.html
     io.of('/index').on('connection',function(socket) {
-        console.log('index connected!');
+        require('./index.socket.js')(socket);
     });
 
     //login.html
     io.of('/login').on('connection',function(socket) {
-        console.log('login connected!');
+        require('./login.socket.js')(socket);
     });
 };
 
