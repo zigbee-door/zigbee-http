@@ -1,4 +1,4 @@
-var express = require('express')
+const express = require('express')
     , favicon = require('serve-favicon')
     , logger = require('morgan')
     , cookieParser = require('cookie-parser')
@@ -14,15 +14,17 @@ var express = require('express')
     , server = http.createServer(app)
     , io = require('socket.io')(server);
 
+// mongoose,redis config init
+require('./config')();
 
-app.set('port', process.env.PORT || 4000);      //设置默认端口, 启动views
+app.set('port', process.env.PORT || 3000);      //设置默认端口, 启动views
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.html',ejs.__express);
 app.set('view engine', 'html');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -74,11 +76,12 @@ app.use(function(err, req, res, next) {
 });
 
 
-//socket.io
+// socket.io
 require("./server/sockets")(io);
 
 
-//module.exports = app; 启动服务
+// module.exports = app;
+// start http server
 server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
