@@ -1,0 +1,20 @@
+{
+  "name": "zigbee-http",
+  "description": "",
+  "main": "",
+  "authors": [
+    "ziyi2 <673191402@qq.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/zigbee-door/zigbee-http",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap-table": "^1.11.0"
+  }
+}

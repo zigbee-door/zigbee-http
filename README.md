@@ -12,12 +12,14 @@ npm start               //Mac Os X
 npm run start_win       //Windows
 ```
 
-### Hik环境(仍然是开发环境)
+### hik环境(仍然是开发环境)
 
 ```javascript
 npm run start_win_dev   //Windows
 ```
 
 
-## 架构
+
+
+
 
