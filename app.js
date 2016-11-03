@@ -36,11 +36,20 @@ app.use(expressSession({
 }));                      			//开启session
 app.use(express.static(path.join(__dirname, 'client')));
 
+// redirect
+app.use((req,res,next) => {
+  if(req.session.userid || req.originalUrl === '/' || req.originalUrl === '/login') {
+    next();
+  } else {
+    res.redirect('/');  //暂时所有的路由没有权限都重定向到登录页
+  }
+});
+
 // router list
 var routes = fs.readdirSync('./server/routes');
-for(var i in routes){
-  var name = routes[i].replace('.js','');
-  var route = '/' + routes[i].split('.')[0];
+for(let i in routes){
+  let name = routes[i].replace('.js','');
+  let route = '/' + routes[i].split('.')[0];
   if(name !== '.DS_Store'){   //MAC下需要注意屏蔽.DS_Store文件
     app.use(route, require('./server/routes/'+ name));
   }
@@ -57,7 +66,7 @@ app.use(function(req, res, next) {
 // error handlers
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'development') {
+if (app.get('env') === 'local') { //default development
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {

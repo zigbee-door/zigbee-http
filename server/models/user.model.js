@@ -22,10 +22,10 @@ let UserSchema = new mongoose.Schema({
             return md5.update(`${password}${common.salt}`,'utf8').digest('base64');
         }
     },
-    email:{
+    usertype:{
         type:String,
-        require:true,
-        trim:true
+        default:mongodb.Oper,
+        enum:[mongodb.Admin,mongodb.Oper]  //只能是操作员或者管理员
     },
     createTime:{
         type:String,
@@ -55,3 +55,37 @@ UserSchema.methods.print = () => {
 
 //发布Model
 let User = mongoose.model(mongodb.User,UserSchema);
+
+
+//设置2个固定的管理员
+let admin1 = new User({
+    username:'admin1',
+    usertype:mongodb.Admin,
+    password: '1111'
+});
+
+let admin2 = new User({
+    username:'admin2',
+    usertype:mongodb.Admin,
+    password: '1111'
+});
+
+User.findOne({username:'admin1'})
+    .exec(function(err,user){
+        if(!user){
+            admin1.save(function(err){
+                if(err){
+                    //console.log('amdmin exist!');
+            }});
+        }
+    });
+
+User.findOne({username:'admin2'})
+    .exec(function(err,user){
+        if(!user){
+            admin2.save(function(err){
+                if(err){
+                    //console.log('amdmin exist!');
+                }});
+        }
+    });

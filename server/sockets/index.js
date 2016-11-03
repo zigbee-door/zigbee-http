@@ -1,10 +1,10 @@
-/**
- * node:        index.js
- * data:        16.11.01
- * author:      zhuxiankang
- * describe:    socket连接
- */
 
+/**
+ * describe: Socket连接
+ * data:     16.11.01
+ * author:   zhuxiankang
+ * parm:     io
+ */
 module.exports = function(io) {
     //index.html
     io.of('/index').on('connection',function(socket) {

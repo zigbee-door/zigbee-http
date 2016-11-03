@@ -1,0 +1,56 @@
+body{
+    font-family:"Microsoft YaHei";
+    background-color: #f8f8f8;
+}
+
+#wrapper{
+    width: 100%;
+}
+
+
+/*导航*/
+
+.nav {
+    margin-bottom: 0;
+}
+
+
+.nav .navbar-header a{
+    color: black;
+}
+
+.nav .navbar-header a:hover,
+.nav .navbar-header a:active{
+    color: grey;
+    text-decoration: none;
+}
+
+.nav .navbar-brand-img{
+    float: left;
+    padding: 0;
+}
+
+.nav .navbar-brand-img > img{
+    display: block;
+    height: 50px;
+}
+
+.nav .navbar-brand-text{
+    float: left;
+    padding: 10px;
+    font-size: 25px;
+    line-height: 30px;
+}
+
+.nav .navbar-top-links{
+    margin-right: 0;
+}
+
+.nav .navbar-top-links{
+    margin-right: 0;
+}
+
+.nav .navbar-top-links li a{
+    padding: 15px;
+    min-height: 50px;
+}
