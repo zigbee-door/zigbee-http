@@ -51,5 +51,20 @@ module.exports = {
         function onerror(err) {
             res.redirect('/');  //暂时这样处理
         }
+    },
+
+    /**
+     * 注销
+     * @param req
+     * @param res
+     * @param next
+     */
+    logout(req,res,next) {
+        req.session.destroy(function(){  //移除会话
+            res.redirect('/');
+        });
     }
+
+
+
 };

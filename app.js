@@ -30,7 +30,7 @@ app.use(cookieParser('MAGICString'));    //开启cookie
 app.use(expressSession({
   secret:'12345',
   name:'testapp',
-  //ookie: {maxAge: 300000 },  	    //设置maxAge是300000ms，即300s后session和相应的cookie失效过期
+  cookie: {maxAge: 300000 },  	    //设置maxAge是300000ms，即300s后session和相应的cookie失效过期
   resave: false,					//是指每次请求都重新设置session cookie，假设你的cookie是10分钟过期，每次请求都会再设置10分钟
   saveUninitialized: true			//是指无论有没有session cookie，每次请求都设置个session cookie ，默认给个标示为 connect.sid
 }));                      			//开启session
@@ -41,7 +41,7 @@ app.use((req,res,next) => {
   if(req.session.userid || req.originalUrl === '/' || req.originalUrl === '/login') {
     next();
   } else {
-    res.redirect('/');  //暂时所有的路由没有权限都重定向到登录页
+    res.redirect('/');  //没有权限的理由暂时都重定向到登录页
   }
 });
 

@@ -1,5 +1,5 @@
 <nav class="nav navbar navbar-default navbar-static-top" role="navigation">
-    <!----------1.1 顶部菜单--------->
+    <!-- 顶部菜单 -->
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -13,9 +13,8 @@
         <a class="navbar-brand-text" href="/home" title="无线门锁系统">
             无线门锁系统
         </a>
-
     </div>
-    <!-- /.navbar-header -->
+
     <ul class="nav navbar-top-links navbar-right">
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -27,11 +26,14 @@
             <ul class="dropdown-menu dropdown-user">
                 <li><a href="/signup"><i class="fa fa-gear fa-fw"></i><strong> 注册</strong></a>
                 </li>
-                <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i><strong> 注销</strong></a>
+                <li><a href="/login/logout"><i class="fa fa-sign-out fa-fw"></i><strong> 注销</strong></a>
                 </li>
             </ul>
-            <!-- /.dropdown-messages -->
         </li>
-        <!-- /.dropdown -->
     </ul>
-    <!-- /.navbar-top-links -->
+
+    <!-- 左侧菜单 -->
+    <%- include sidebar.html %>
+</nav>
+
+
