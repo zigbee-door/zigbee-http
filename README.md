@@ -2,25 +2,14 @@
 
 ## 启动
 
-### 本地环境
-
 ```javascript
-npm start               //Mac Os X
+npm start   //本地环境,其他环境查看package.json
 ```
 
-```javascript
-npm run start_win       //Windows
-```
 
-### hik环境(仍然是开发环境)
+## 插件
 
-```javascript
-npm run start_win_dev   //Windows
-```
-
-## 功能
-
-| 插件      |     描述 |
+| 名称      |     描述 |
 | :-------- | :--------|
 | mongoose    |   mongodb数据库存储 |
 | redis    |   缓存和进程间通信 |
