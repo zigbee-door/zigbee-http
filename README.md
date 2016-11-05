@@ -6,6 +6,13 @@
 npm start   //本地环境,其他环境查看package.json
 ```
 
+## http服务
+
+- (localhost:3000)[localhost:3000]
+
+
+
+
 
 ## 插件
 
