@@ -71,7 +71,7 @@ let admin2 = new User({
 });
 
 User.findOne({username:'admin1'})
-    .exec(function(err,user){
+    .exec((err,user) => {
         if(!user){
             admin1.save(function(err){
                 if(err){
@@ -81,7 +81,7 @@ User.findOne({username:'admin1'})
     });
 
 User.findOne({username:'admin2'})
-    .exec(function(err,user){
+    .exec((err,user) => {
         if(!user){
             admin2.save(function(err){
                 if(err){

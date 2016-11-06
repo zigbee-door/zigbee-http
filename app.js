@@ -41,7 +41,7 @@ app.use((req,res,next) => {
   if(req.session.userid || req.originalUrl === '/' || req.originalUrl === '/login') {
     next();
   } else {
-    res.redirect('/');  //没有权限的理由暂时都重定向到登录页
+    res.redirect('/');              //没有权限的理由暂时都重定向到登录页
   }
 });
 
@@ -92,6 +92,8 @@ app.use(function(err, req, res, next) {
 // socket.io
 require("./server/sockets")(io);
 
+// redis subscribe
+require("./server/sub")();
 
 // module.exports = app;
 // start http server

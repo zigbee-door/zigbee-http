@@ -1,3 +1,11 @@
+/**
+ * describe: mongodb中的model常量
+ * data:     16.11.04
+ * author:   zhuxiankang
+ * parm:     none
+ */
+
+
 module.exports = {
   //model name
   User: "User",

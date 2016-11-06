@@ -1,3 +1,11 @@
+/**
+ * describe: http通信时的状态常量
+ * data:     16.11.04
+ * author:   zhuxiankang
+ * parm:     none
+ */
+
+
 module.exports = {
     //common
     success:        'success',

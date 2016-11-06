@@ -9,7 +9,7 @@ const config = require('./config');
 const mongoose = require('mongoose');
 const Redis = require('redis');
 
-module.exports = function(){
+module.exports = () => {
 
     //连接mongodb
     mongoose.connect(config.mongodb[process.env.NODE_ENV], (err) => {

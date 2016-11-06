@@ -5,7 +5,7 @@
  * author:   zhuxiankang
  * parm:     socket
  */
-module.exports = function(socket) {
+module.exports = (socket) => {
     //index.html
     console.log('socket.io index connected!');
 };

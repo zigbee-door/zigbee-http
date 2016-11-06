@@ -5,7 +5,7 @@
  * author:   zhuxiankang
  * parm:     io
  */
-module.exports = function(io) {
+module.exports = (io) => {
     //index.html
     io.of('/index').on('connection',function(socket) {
         require('./index.socket.js')(socket);
