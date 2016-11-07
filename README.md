@@ -26,19 +26,20 @@ npm start   //本地环境,其他环境查看package.json
 
 ```javascript
 .
-├── app.js                      # 启动脚本
+├── client                      # 客户端
 ├── config                      # 配置
 │   ├── config.js               # 参数配置
 │   └── index.config.js         # 导出配置
-├── client                      # 客户端
 ├── server                      # 服务端
 │   ├── constants/              # 常量
-│   ├── controllers/            # 逻辑处理
-│   ├── models/                 # 数据库
+│   ├── controllers/            # 逻辑
+│   ├── events/                 # 事件
+│   ├── models/                 # 数据
 │   ├── routes/                 # 路由
 │   ├── sockets/                # socket.io
-│   └── sub/                    # redis订阅
-└── views                       # 视图
+│   └── sub/                    # 订阅
+├── views                       # 视图
+└── app.js                      # 启动脚本
 
 ```
 

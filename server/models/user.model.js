@@ -1,5 +1,5 @@
 let mongoose = require('mongoose');
-const mongodb = require('../constants/mongodb.constant');
+const mongo_con = require('../constants/mongo.constant');
 const common = require('../constants/common.constant');
 const moment = require('moment'); //时间格式模块
 const crypto = require('crypto');
@@ -24,8 +24,8 @@ let UserSchema = new mongoose.Schema({
     },
     usertype:{
         type:String,
-        default:mongodb.Oper,
-        enum:[mongodb.Admin,mongodb.Oper]  //只能是操作员或者管理员
+        default:mongo_con.Oper,
+        enum:[mongo_con.Admin,mongo_con.Oper]  //只能是操作员或者管理员
     },
     createTime:{
         type:String,
@@ -54,19 +54,19 @@ UserSchema.methods.print = () => {
 
 
 //发布Model
-let User = mongoose.model(mongodb.User,UserSchema);
+let User = mongoose.model(mongo_con.User,UserSchema);
 
 
 //设置2个固定的管理员
 let admin1 = new User({
     username:'admin1',
-    usertype:mongodb.Admin,
+    usertype:mongo_con.Admin,
     password: '1111'
 });
 
 let admin2 = new User({
     username:'admin2',
-    usertype:mongodb.Admin,
+    usertype:mongo_con.Admin,
     password: '1111'
 });
 

@@ -5,6 +5,7 @@
  * author:   zhuxiankang
  * parm:     io
  */
+
 module.exports = (io) => {
     //index.html
     io.of('/index').on('connection',function(socket) {

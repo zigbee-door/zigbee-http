@@ -5,7 +5,16 @@
  * author:   zhuxiankang
  * parm:     socket
  */
+const event = require('../events')
+    , channel = require('../constants/redis.constant');
+
+
+
+
 module.exports = (socket) => {
-    //index.html
-    console.log('socket.io index connected!');
+    //接收来自redis订阅的基站连接状态数据 - base.sub.js
+    event.on(channel.base_status, (msg) => {
+        // console.log(msg);
+        socket.emit(channel.base_status,msg);
+    });
 };

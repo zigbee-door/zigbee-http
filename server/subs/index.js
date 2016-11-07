@@ -17,7 +17,7 @@ module.exports = function() {
     redis.on('message', (channel,msg) => {
         switch(channel) {
             case 'base_status':             //这里暂时使用魔法字符串,异步channel.base_status = undefined何解?
-                //console.log(msg);
+                require('./base.sub')(msg);
                 break;
 
             default:

@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongodb = require('../constants/mongodb.constant');
+const mongo_con = require('../constants/mongo.constant');
 const common = require('../constants/common.constant');
 const httpStatus = require('../constants/httpStatus.constant');
 const crypto = require('crypto');
@@ -24,7 +24,7 @@ module.exports = {
      */
     loginAuthen(req,res,next) {
 
-        let User = mongoose.model(mongodb.User);
+        let User = mongoose.model(mongo_con.User);
         let queryUser = req.body;
         let md5 = crypto.createHash('md5');
 

@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <%- include head.html %>
+    <!-- Bootstrap-table -->
+    <link rel="stylesheet" href="/lib/bootstrap-table/bootstrap-table.min.css">
     <title>无线门禁系统主页</title>
 </head>
     <body>
@@ -22,8 +24,9 @@
                         基站状态
                     </div>
                     <div class="panel-body">
-                        <table data-toggle="table"
-                               data-url="/home/baseTable"
+                        <table id="baseTable"
+                               data-toggle="table"
+                               data-url="/index/baseTable"
                                data-cache="false"
                                data-height="526"
                                data-row-style="baseRowStyle"
@@ -40,11 +43,11 @@
                             <thead>
                             <tr>
                                 <th data-field="state" data-checkbox="true"></th>
-                                <th data-field="baseIP" data-align="center">IP地址</th>
-                                <th data-field="location" data-align="center">地理位置</th>
-                                <th data-field="status" data-align="center" data-sortable="true">连接状态</th>
-                                <th data-field="onTime" data-align="center">连接时间</th>
-                                <th data-field="offTime" data-align="center">断开时间</th>
+                                <th data-field="ip" data-align="center">IP</th>
+                                <th data-field="location" data-align="center">位置</th>
+                                <th data-field="status" data-align="center" data-sortable="true">状态</th>
+                                <th data-field="time" data-align="center">连接/断开时间</th>
+                                <th data-field="list" data-align="center">门锁列表</th>
                             </tr>
                             </thead>
                         </table>
@@ -55,17 +58,28 @@
 
         <!-- js文件 -->
         <%- include script.html %>
+        <!-- Bootstrap-table Core JavaScript -->
+        <script src="/lib/bootstrap-table/bootstrap-table.min.js"></script>
+        <!-- socket.io -->
+        <script src="/js/sockets/index.socket.js"></script>
 
-        <!-- socket.io长连接 -->
+        <!-- bootstrap-table -->
         <script>
-            (function(){    //需要注意块级作用域,防止命名冲突
-                var index = io.connect('http://localhost:3000/index');
-                index.on('message', function (data) {
-                    console.log(data);
-                });
-            })();
-        </script>
+            //表格条纹样式
+            function baseRowStyle(row, index) {
+                var classes = ['success', 'warning'];
 
+                if(row.status === '连接'){
+                    return {
+                        classes: classes[0]
+                    };
+                } else {
+                    return {
+                        classes: classes[1]
+                    };
+                }
+            }
+        </script>
     </body>
 </html>
 

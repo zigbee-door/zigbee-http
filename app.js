@@ -93,7 +93,7 @@ app.use(function(err, req, res, next) {
 require("./server/sockets")(io);
 
 // redis subscribe
-require("./server/sub")();
+require("./server/subs")();
 
 // module.exports = app;
 // start http server
