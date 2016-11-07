@@ -27,6 +27,10 @@ npm start   //本地环境,其他环境查看package.json
 ```javascript
 .
 ├── client                      # 客户端
+│   ├── css                     # 样式
+│   ├── imgs                    # 图片
+│   ├── js                      # 脚本
+│   └── lib                     # 插件
 ├── config                      # 配置
 │   ├── config.js               # 参数配置
 │   └── index.config.js         # 导出配置
@@ -37,7 +41,7 @@ npm start   //本地环境,其他环境查看package.json
 │   ├── models/                 # 数据
 │   ├── routes/                 # 路由
 │   ├── sockets/                # socket.io
-│   └── sub/                    # 订阅
+│   └── subs/                   # 订阅
 ├── views                       # 视图
 └── app.js                      # 启动脚本
 
@@ -50,6 +54,7 @@ npm start   //本地环境,其他环境查看package.json
 | :-------- | :--------|
 | 2016/11/01    |  socket.io成功 |
 | 2016/11/06    |  redis订阅成功 |
+| 2016/11/07    |  redis订阅数据成功通过socket.io发送至浏览器 |
 
 
 
