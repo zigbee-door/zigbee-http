@@ -1,8 +1,8 @@
-let mongoose = require('mongoose');
-const mongo_con = require('../constants/mongo.constant');
-const common = require('../constants/common.constant');
-const moment = require('moment'); //时间格式模块
-const crypto = require('crypto');
+const mongoose = require('mongoose')
+    , mongo_con = require('../constants/mongo.constant')
+    , common = require('../constants/common.constant')
+    , moment = require('moment') //时间格式模块
+    , crypto = require('crypto');
 
 //创建Schema
 let UserSchema = new mongoose.Schema({

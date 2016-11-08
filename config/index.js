@@ -5,9 +5,9 @@
  * describe:    配置初始化
  */
 
-const config = require('./config');
-const mongoose = require('mongoose');
-const Redis = require('redis');
+const config = require('./config')
+    , mongoose = require('mongoose')
+    , Redis = require('redis');
 
 module.exports = () => {
 

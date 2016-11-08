@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const mongo_con = require('../constants/mongo.constant');
-const common = require('../constants/common.constant');
-const httpStatus = require('../constants/httpStatus.constant');
-const crypto = require('crypto');
-const co = require('co');
+const mongoose = require('mongoose')
+    , mongo_con = require('../constants/mongo.constant')
+    , common = require('../constants/common.constant')
+    , httpStatus = require('../constants/httpStatus.constant')
+    , crypto = require('crypto')
+    , co = require('co');
 
 module.exports = {
     /**

@@ -1,3 +1,4 @@
+'use strict';
 
 (function(){    //需要注意块级作用域,防止命名冲突
     var index = io.connect('http://localhost:3000/index');

@@ -31,7 +31,7 @@ app.use(expressSession({
   secret:'12345',
   name:'testapp',
   // cookie: {maxAge: 300000 },  	//设置maxAge是300000ms，即300s后session和相应的cookie失效过期
-  // resave: false,					//是指每次请求都重新设置session cookie，假设你的cookie是10分钟过期，每次请求都会再设置10分钟
+  resave: false,					//是指每次请求都重新设置session cookie，假设你的cookie是10分钟过期，每次请求都会再设置10分钟
   saveUninitialized: true			//是指无论有没有session cookie，每次请求都设置个session cookie ，默认给个标示为 connect.sid
 }));                      			//开启session
 app.use(express.static(path.join(__dirname, 'client')));

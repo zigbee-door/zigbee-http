@@ -20,6 +20,9 @@ npm start   //本地环境,其他环境查看package.json
 | socket.io    |   websocket通信 |
 | bootstrap    |   响应式设计 |
 | bootstrap-table    |   丰富的表格形式 |
+| metisMenu   |   菜单 |
+| chart | |
+| angular-chart   |   丰富的图表形式 |
 
 
 ## 目录
