@@ -21,8 +21,14 @@ npm start   //本地环境,其他环境查看package.json
 | bootstrap    |   响应式设计 |
 | bootstrap-table    |   丰富的表格形式 |
 | metisMenu   |   菜单 |
+| angular   |   前端库 |
 | chart | |
 | angular-chart   |   丰富的图表形式 |
+
+## 工具
+
+| Redis DeskTop Manager | Redis可视化工具 |
+| MongoChef Core   |   Mongodb可视化工具(Robomongo对于mongodb 3.0以上版本无效) |
 
 
 ## 目录
@@ -58,6 +64,6 @@ npm start   //本地环境,其他环境查看package.json
 | 2016/11/01    |  socket.io成功 |
 | 2016/11/06    |  redis订阅成功 |
 | 2016/11/07    |  redis订阅数据成功通过socket.io发送至浏览器 |
-
+| 2016/12/07    |  修复windows环境运行问题 |
 
 
