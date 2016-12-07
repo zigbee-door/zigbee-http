@@ -9,10 +9,12 @@ const config = require('./config')
     , mongoose = require('mongoose')
     , Redis = require('redis');
 
+
 module.exports = () => {
 
     //连接mongodb
-    mongoose.connect(config.mongodb[process.env.NODE_ENV], (err) => {
+    mongoose.connect(config.mongodb['local'], (err) => {
+
         if(err){
             console.log(err);
             return;
