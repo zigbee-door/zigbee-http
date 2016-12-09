@@ -1,4 +1,4 @@
-# zigbee-http
+﻿# zigbee-http
 
 ## 启动
 
@@ -27,6 +27,8 @@ npm start   //本地环境,其他环境查看package.json
 
 ## 工具
 
+| 名称      |     描述 |
+| :-------- | :--------|
 | Redis DeskTop Manager | Redis可视化工具 |
 | MongoChef Core   |   Mongodb可视化工具(Robomongo对于mongodb 3.0以上版本无效) |
 
