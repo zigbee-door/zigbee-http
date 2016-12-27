@@ -57,11 +57,19 @@ npm start   //本地环境,其他环境查看package.json
 │   ├── models/                 # 数据
 │   ├── routes/                 # 路由
 │   ├── sockets/                # socket.io
+│   ├── pubs/                   # 发布
 │   └── subs/                   # 订阅
 ├── views                       # 视图
 └── app.js                      # 启动脚本
 
 ```
+
+## 问题
+
+| 类型      |     说明 |
+| :-------- | :--------|
+| redis发布订阅    |  在Redis中，一旦一个client发出了SUBSCRIBE命令，它就处于监听的模式，此时除了SUBSCRIBE， PSUBSCRIBE，UNSUBSCRIBE，PUNSUBSCRIBE这4条命令之外的所有其它命令都不能用，所以需要使用两个client. |
+
 
 
 ## 进度记录
@@ -72,5 +80,7 @@ npm start   //本地环境,其他环境查看package.json
 | 2016/11/06    |  redis订阅成功 |
 | 2016/11/07    |  redis订阅数据成功通过socket.io发送至浏览器 |
 | 2016/12/07    |  修复windows环境运行问题 |
+| 2016/12/26    |  添加了获取门锁关联列表页面 |
+| 2016/12/27    |  使用angular实现了控制器，并实现了socket不同的页面之间的连接，实现了redis发布，成功发布命令给tcp程序 |
 
 

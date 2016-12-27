@@ -30,9 +30,9 @@
                         <div class="form-inline">
                             <div class="input-group">
                                 <span class="input-group-addon list-group-item-info">基站IP</span>
-                                <select id="selectBaseIP" class="form-control text-center">
+                                <select ng-change="updateChange(baseIP)" ng-model="baseIP" id="selectBaseIP" class="form-control text-center">
                                     <% baseIpLists.forEach(function(list){ %>
-                                    <option><%= list %></option>
+                                    <option value="<%= list %>"><%= list %></option>
                                     <% }) %>
                                 </select>
                             </div>
@@ -82,18 +82,28 @@
 <script src="/js/angular/services/doorList.service.js"></script>
 <script src="/js/angular/controllers/doorList.controller.js"></script>
 
-<script>
-    (function(){
-        $(function () {
-            var $table = $('#doorListTable');
+<!--<script>-->
+    <!--(function(){-->
+        <!--$(function () {-->
+            <!--var $table = $('#doorListTable');-->
 
-            $("#selectBaseIP").bind("change",function(){
-                var url = '/doorList/' + $(this).val();
-                $table.bootstrapTable('refresh',{url:url});
-            });
-        });
-    })();
-</script>
+            <!--$("#selectBaseIP").bind("change",function(){-->
+
+                <!--//按钮状态回归-->
+                <!--var $btn = $('#doorList_update');-->
+                <!--$btn.removeClass();-->
+                <!--$btn.addClass('btn btn-warning');-->
+                <!--$btn.text('更新当前基站IP的门锁关联列表');-->
+                <!--$btn.removeAttr("disabled");-->
+
+
+
+                <!--var url = '/doorList/' + $(this).val();-->
+                <!--$table.bootstrapTable('refresh',{url:url});-->
+            <!--});-->
+        <!--});-->
+    <!--})();-->
+<!--</script>-->
 
 </body>
 </html>

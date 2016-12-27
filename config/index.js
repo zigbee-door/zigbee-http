@@ -28,10 +28,11 @@ module.exports = () => {
     });
 
     //连接redis,这里暂时给全局
-    global.redis = Redis.createClient(config.redis[process.env.NODE_ENV]);
+    global.redis_sub = Redis.createClient(config.redis[process.env.NODE_ENV]);
+    global.redis_pub = Redis.createClient(config.redis[process.env.NODE_ENV]);
 
-    if(redis) {
-        console.log(`Connect to ${process.env.NODE_ENV} redis success!`)
+    if(redis_sub && redis_pub) {
+        console.log(`Connect to ${process.env.NODE_ENV} redis_sub and redis_pub success!`)
     }
 
 };

@@ -7,6 +7,8 @@
 
 module.exports = {
     //index.html
-    index: 'index'            //index频道
+    index: 'index',            //index频道
+    //doorList.html
+    doorList: 'doorList'       //doorList频道
 };
 

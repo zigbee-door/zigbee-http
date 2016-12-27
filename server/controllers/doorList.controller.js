@@ -19,14 +19,16 @@ module.exports = {
             let bases = yield Base.find({});
             if(bases) {
                 for(let i=0,len=bases.length;i<len;i++) {
-                    baseIpLists.push(bases[i].ip);
+                    if(bases[i].status === '连接') {
+                       baseIpLists.push(bases[i].ip);
+                    }
                 }
             }
 
             res.render('doorList', {
                 username: req.session.username,
                 usertype: req.session.usertype,
-                baseIpLists: baseIpLists
+                baseIpLists: baseIpLists            //基站连接的设备才可以进行配置操作
             });
         });
     }

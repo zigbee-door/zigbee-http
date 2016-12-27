@@ -2,7 +2,7 @@
 
 (function(){    //需要注意块级作用域,防止命名冲突
     var index = io.connect('http://localhost:3000/index');
-    index.on('index', function (data) {     //index频道
+    index.on('index', function (data) {     //index频道，和页面一样
         var $table = $('#baseTable'),
             base = JSON.parse(data),
             data = $table.bootstrapTable('getData'),

@@ -10,11 +10,9 @@ const event = require('../events')
     , socket_con = require('../constants/socket.constant');
 
 
-
-
 module.exports = (socket) => {
     //接收来自redis订阅的基站连接状态数据 - base.sub.js
-    event.on(redis_con.base_status, (msg) => {
+    event.on(redis_con.index, (msg) => {
         // console.log(msg);
         socket.emit(socket_con.index,msg);
     });
