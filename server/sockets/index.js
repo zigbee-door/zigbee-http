@@ -8,14 +8,14 @@
 
 module.exports = (io) => {
     //index.html
-    io.of('/index').on('connection',function(socket) {
+    io.of('/index').on('connection',(socket) => {
         require('./index.socket.js')(socket);
     });
 
-    // //login.html
-    // io.of('/login').on('connection',function(socket) {
-    //     require('./login.socket.js')(socket);
-    // });
+    //doorList.html
+    io.of('/doorList').on('connection',(socket) => {
+        require('./doorList.socket.js')(socket);
+    });
 };
 
 

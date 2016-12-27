@@ -1,3 +1,3 @@
 "use strict";
 
-var webapp = angular.module("webapp", ['chart.js']);
+var webapp = angular.module("webapp", []);

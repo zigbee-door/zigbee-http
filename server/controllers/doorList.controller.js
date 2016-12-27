@@ -29,7 +29,7 @@ module.exports = {
                 baseIpLists: baseIpLists
             });
         });
-    },
+    }
 
 
     /**
@@ -38,7 +38,7 @@ module.exports = {
      * author:   zhuxiankang
      * parm:     req,res,next
      */
-    getDoorAssociateList(req,res,next) {
-
-    }
+    // getDoorAssociateList(req,res,next) {
+    //
+    // }
 };

@@ -38,9 +38,14 @@ npm start   //本地环境,其他环境查看package.json
 ```javascript
 .
 ├── client                      # 客户端
-│   ├── css                     # 样式
-│   ├── imgs                    # 图片
-│   ├── js                      # 脚本
+│   ├── css/                     # 样式
+│   ├── imgs/                    # 图片
+│   ├── js/                      # 脚本
+│   │  ├── angular/                      # angular应用
+│   │  │  ├── controllers/   	     # angular控制器
+│   │  │  ├── services/	             # angular服务
+│   │  │  └── webapp.js/	 	     # angular自动引导应用程序
+│   │  └── sockets/			     # sockets应用
 │   └── lib                     # 插件
 ├── config                      # 配置
 │   ├── config.js               # 参数配置

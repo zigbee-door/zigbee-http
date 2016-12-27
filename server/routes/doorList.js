@@ -3,5 +3,6 @@ const doorListController = require('../controllers/doorList.controller')
     , router = express.Router();
 //router -> /index
 router.get('/',doorListController.renderDoorList);
-router.get('/',doorListController.getDoorAssociateList);
+// router.get('/',doorListController.getDoorAssociateList);
+
 module.exports = router;

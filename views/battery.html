@@ -5,7 +5,7 @@
     <title>无线门禁系统电池测试页</title>
 </head>
 <body>
-    <div id="wrapper" ng-app="webapp">
+    <div id="wrapper" ng-app="webappChart">
         <!-- 导航 -->
         <%- include nav.html %>
 
@@ -58,75 +58,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                电池消耗数据
-                            </div>
-                            <div class="panel-body">
-                                <table
-                                       data-toggle="table"
-                                       data-url="/index/baseTable"
-                                       data-cache="false"
-                                       data-height="526"
-                                       data-row-style="baseRowStyle"
-                                       data-sort-order="desc"
-                                       data-show-columns="true"
-                                       data-click-to-select="true"
-                                       data-single-select="true"
-                                       data-show-refresh="true"
-                                       data-show-toggle="true"
-                                       data-select-item-name="toolbar1"
-                                       data-toolbar="#custom-toolbar"
-                                       data-pagination="true"
-                                       data-page-list="[10, 20, 50, 100, 200]">
-                                    <thead>
-                                    <tr>
-                                        <th data-field="state" data-checkbox="true"></th>
-                                        <th data-field="ip" data-align="center">时间</th>
-                                        <th data-field="location" data-align="center">电量</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                电池消耗数据
-                            </div>
-                            <div class="panel-body">
-                                <table
-                                       data-toggle="table"
-                                       data-url="/index/baseTable"
-                                       data-cache="false"
-                                       data-height="526"
-                                       data-row-style="baseRowStyle"
-                                       data-sort-order="desc"
-                                       data-show-columns="true"
-                                       data-click-to-select="true"
-                                       data-single-select="true"
-                                       data-show-refresh="true"
-                                       data-show-toggle="true"
-                                       data-select-item-name="toolbar1"
-                                       data-toolbar="#custom-toolbar"
-                                       data-pagination="true"
-                                       data-page-list="[10, 20, 50, 100, 200]">
-                                    <thead>
-                                    <tr>
-                                        <th data-field="state" data-checkbox="true"></th>
-                                        <th data-field="time" data-align="center">时间</th>
-                                        <th data-field="ip" data-align="center">剩余</th>
-                                        <th data-field="location" data-align="center">消耗</th>
-                                    </tr>
-                                    </thead>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -140,7 +71,7 @@
     <script src="/lib/chart/Chart.min.js"></script>
     <script src="/lib/chart/angular-chart.min.js"></script>
     <!-- own -->
-    <script src="/js/angular/webapp.js"></script>
+    <script src="/js/angular/webappChart.js"></script>
     <script src="/js/angular/controllers/battery.controller.js"></script>
 
 </body>

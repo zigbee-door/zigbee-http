@@ -3,5 +3,5 @@ const indexController = require('../controllers/index.controller')
     , router = express.Router();
 //router -> /index
 router.get('/',indexController.renderIndex);
-router.get('/baseTable/:ip',indexController.getAsso);
+router.get('/baseTable',indexController.baseTable);
 module.exports = router;

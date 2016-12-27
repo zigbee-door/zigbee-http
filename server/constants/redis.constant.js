@@ -6,6 +6,6 @@
  */
 
 module.exports = {
-    //channel
-    base_status: 'base_status'    //基站连接状态频道
+    //index.html
+    base_status: 'base_status'            //基站连接状态频道
 };

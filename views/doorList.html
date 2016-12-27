@@ -8,90 +8,92 @@
     <link rel="stylesheet" href="/css/doorList.css">
     <title>无线门禁系统主页</title>
 </head>
-<body ng-app="webapp" ng-controller="doorListController">
-<div id="wrapper" class="doorList">
-    <!-- 导航 -->
-    <%- include nav.html %>
+<body>
+    <div id="wrapper" class="doorList">
+        <!-- 导航 -->
+        <%- include nav.html %>
 
-    <!-- 设备列表 -->
-    <div id="page-wrapper">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1 class="page-header">门锁关联列表</h1>
-            </div>
-        </div>
-
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                门锁关联列表获取
-            </div>
-            <div class="panel-body">
-                <div id="custom-toolbar">
-                    <form class="form-inline">
-                        <div class="input-group">
-                            <span class="input-group-addon list-group-item-info">基站IP</span>
-                            <select id="selectBaseIP" class="form-control text-center">
-                                <% baseIpLists.forEach(function(list){ %>
-                                <option><%= list %></option>
-                                <% }) %>
-                            </select>
-                        </div>
-                    </form>
+        <!-- 设备列表 -->
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">门锁关联列表</h1>
                 </div>
-                <table id="doorListTable"
-                       data-toggle="table"
-                       data-cache="false"
-                       data-height="526"
-                       data-sort-order="desc"
-                       data-show-columns="true"
-                       data-click-to-select="true"
-                       data-single-select="true"
-                       data-show-refresh="true"
-                       data-show-toggle="true"
-                       data-select-item-name="toolbar1"
-                       data-toolbar="#custom-toolbar"
-                       data-pagination="true"
-                       data-page-list="[10, 20, 50, 100, 200]">
-                    <thead>
-                    <tr>
-                        <th data-field="state" data-checkbox="true"></th>
-                        <th data-field="ip" data-align="center">IP</th>
-                        <th data-field="location" data-align="center">位置</th>
-                        <th data-field="status" data-align="center" data-sortable="true">状态</th>
-                        <th data-field="time" data-align="center">连接/断开时间</th>
-                        <th data-field="list" data-align="center">门锁列表</th>
-                    </tr>
-                    </thead>
-                </table>
+            </div>
+
+            <div class="panel panel-default" ng-app="webapp" ng-controller="doorListController">
+                <div class="panel-heading">
+                    门锁关联列表
+                </div>
+                <div class="panel-body">
+                    <div id="custom-toolbar">
+                        <div class="form-inline">
+                            <div class="input-group">
+                                <span class="input-group-addon list-group-item-info">基站IP</span>
+                                <select id="selectBaseIP" class="form-control text-center">
+                                    <% baseIpLists.forEach(function(list){ %>
+                                    <option><%= list %></option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            <button id="doorList_update" ng-click="updateRequest()" ng-bind="updateDoorList" class="{{updateDoorListClass}}"></button>
+                        </div>
+                    </div>
+                    <table id="doorListTable"
+                           data-toggle="table"
+                           data-cache="false"
+                           data-height="526"
+                           data-sort-order="desc"
+                           data-show-columns="true"
+                           data-click-to-select="true"
+                           data-single-select="true"
+                           data-show-refresh="true"
+                           data-show-toggle="true"
+                           data-select-item-name="toolbar1"
+                           data-toolbar="#custom-toolbar"
+                           data-pagination="true"
+                           data-page-list="[10, 20, 50, 100, 200]">
+                        <thead>
+                        <tr>
+                            <th data-field="state" data-checkbox="true"></th>
+                            <th data-field="ip" data-align="center">IP</th>
+                            <th data-field="location" data-align="center">位置</th>
+                            <th data-field="status" data-align="center" data-sortable="true">状态</th>
+                            <th data-field="time" data-align="center">连接/断开时间</th>
+                            <th data-field="list" data-align="center">门锁列表</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 <!-- js文件 -->
 <%- include script.html %>
-<!-- Bootstrap-table Core JavaScript -->
-<script src="/lib/bootstrap-table/bootstrap-table.min.js"></script>
 <!-- socket.io -->
-<script src="/js/sockets/index.socket.js"></script>
-<!-- own angularjs-->
-<script src="/javascripts/webapp.js"></script>
-<script src="/javascripts/services/baseList.client.service.js"></script>
-<script src="/javascripts/controllers/baseList.client.controller.js"></script>
+
+
+
+<!--angularJS -->
+<script src="/lib/angular/angular.min.js"></script>
+<!--own angularjs-->
+<script src="/js/angular/webapp.js"></script>
+<script src="/js/angular/services/doorList.service.js"></script>
+<script src="/js/angular/controllers/doorList.controller.js"></script>
 
 <script>
+    (function(){
+        $(function () {
+            var $table = $('#doorListTable');
 
-    $(function () {
-        var $table = $('#doorListTable');
-
-        $("#selectBaseIP").bind("change",function(){
-            var url = '/doorList/' + $(this).val();
-            $table.bootstrapTable('refresh',{url:url});
+            $("#selectBaseIP").bind("change",function(){
+                var url = '/doorList/' + $(this).val();
+                $table.bootstrapTable('refresh',{url:url});
+            });
         });
-
-    });
+    })();
 </script>
-
 
 </body>
 </html>

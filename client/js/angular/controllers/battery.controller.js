@@ -1,6 +1,6 @@
 'use strict';
 
-webapp.controller('batteryLine',['$scope',batteryLine]);
+webappChart.controller('batteryLine',['$scope',batteryLine]);
 
 function batteryLine($scope) {
     $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
@@ -29,9 +29,9 @@ function batteryLine($scope) {
 }
 
 
-webapp.controller('batteryPie',['$scope',batteryPie]);
+webappChart.controller('batteryPie',['$scope',batteryPie]);
 
 function batteryPie($scope) {
     $scope.labels = ["剩余", "消耗"];
-    $scope.data = [56, 44];
+    $scope.data = [80, 20];
 }
