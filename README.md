@@ -53,7 +53,7 @@ npm start   //本地环境,其他环境查看package.json
 ├── server                      # 服务端
 │   ├── constants/              # 常量
 │   ├── controllers/            # 逻辑
-│   ├── events/                 # 事件
+│   ├── events/                 # 事件(有问题，移除，使用socket全局变量)
 │   ├── models/                 # 数据
 │   ├── routes/                 # 路由
 │   ├── sockets/                # socket.io
@@ -64,12 +64,24 @@ npm start   //本地环境,其他环境查看package.json
 
 ```
 
+
+## 全局变量
+| 变量   			|     说明 |
+| :-------- 			| :--------|
+|  global.redis_sub 		|  http服务的redis发布客户对象，config/config.js |
+|  global.redis_pub 		|  http服务的redis订阅客户对象，config/config.js |
+|  global.global.socket_index 	|  index.html保持的socket通信对象 |
+|  global.global.socket_doorList|  doorList.html保持的socket通信对象 |
+
+
+
+
 ## 问题
 
 | 类型      |     说明 |
 | :-------- | :--------|
 | redis发布订阅    |  在Redis中，一旦一个client发出了SUBSCRIBE命令，它就处于监听的模式，此时除了SUBSCRIBE， PSUBSCRIBE，UNSUBSCRIBE，PUNSUBSCRIBE这4条命令之外的所有其它命令都不能用，所以需要使用两个client. |
-
+| event事件   |  不知什么原因导致了监听器建立了多个，所以socket发送给客户端的redis数据（来自于tcp服务端）重复了好多次，所以去掉了事件触发，采用全局变量socket通信对象的方式 |
 
 
 ## 进度记录

@@ -12,6 +12,8 @@ const express = require('express')
     , server = http.createServer(app)
     , io = require('socket.io')(server);
 
+
+
 // mongoose,redis config init
 require('./config')();
 

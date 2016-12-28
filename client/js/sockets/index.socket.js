@@ -2,7 +2,17 @@
 
 (function(){    //需要注意块级作用域,防止命名冲突
     var index = io.connect('http://localhost:3000/index');
+
+    //socket连接
+    index.on('connect',function() {
+        console.log('connect');
+    });
+
     index.on('index', function (data) {     //index频道，和页面一样
+
+
+        console.log('1111');
+
         var $table = $('#baseTable'),
             base = JSON.parse(data),
             data = $table.bootstrapTable('getData'),
@@ -26,4 +36,17 @@
         }
 
     });
+
+    //socket断开连接
+    index.on('disconnect',function() {
+        index.connect();
+    });
+
+
+    index.on('error', function(){
+        index.connect();
+    });
+
+
+
 })();

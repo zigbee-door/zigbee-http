@@ -7,7 +7,10 @@
 
 module.exports = {
     //index.html
-    index: 'index',            //index频道, 首先由tcp -> http发起
+    index: 'index',                         //index频道, 首先由tcp -> http发起
     //doorList.html
-    doorList:  'doorList'                  //doorList频道, 首先由http -> tcp发起
+    doorList_send:  'doorList_send',        //http服务发起，发送获取门锁关联列表命令, doorList_send频道
+    doorList_receive: 'doorList_receive',   //tcp服务发起, 接收来自基站的数据后发送给http服务, doorList_recieve频道
+
+
 };

@@ -17,8 +17,45 @@ function doorListController($scope,$timeout){
 
     $scope.updateDoorList = '更新当前基站IP的门锁关联列表';
     $scope.updateDoorListClass = "btn btn-warning";
-    //$scope.disable = "true";      //可以点击按钮 ng-disable效果不行？
+    //$scope.disable = "true";          //可以点击按钮 ng-disable效果不行？所以使用了JQuery代替
     $btn.attr('disabled',"true");       //添加disabled属性
+
+    // -------------------------------------socket.io----------------------------------------//
+    //socket连接
+    doorList.on('connect',function() {
+        console.log('connect');
+    });
+
+
+    //socket接收数据
+    doorList.on('doorList', function (data) {       //订阅来自http服务器的消息
+
+        //操作成功
+        if(data.status === httpStatus.success) {
+            alert('读取成功！');
+
+
+        }
+
+        //操作失败
+        else {
+            $btn.text('基站已经断开连接,请连接后尝试!');
+        }
+    });
+
+    //socket断开连接
+    doorList.on('disconnect',function() {
+        doorList.connect();
+    });
+
+
+    doorList.on('error', function(){
+        doorList.connect();
+    });
+
+
+
+    // -------------------------------------angular事件---------------------------------------//
 
     /*基站IP选择事件*/
     $scope.updateChange = function(baseIP) {
@@ -57,12 +94,6 @@ function doorListController($scope,$timeout){
             data:   [],                         //需要发送的数据无
             doorId: [0x00,0x00]                 //只是发送到基站的命令门锁Id设置为0x00,0x00
         });                                     //doorList是频道，频道和页面一样，发送更新基站的关联列表命令给http服务器
-
-        doorList.on('doorList', function (data) {       //订阅来自http服务器的消息
-            if(data.status === httpStatus.fail) {
-                $btn.text('基站已经断开连接,请连接后尝试!');
-            }
-        })
     }
 
 

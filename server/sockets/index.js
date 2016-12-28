@@ -6,15 +6,21 @@
  * parm:     io
  */
 
+const socket_doorList = require('./doorList.socket');
+
+
 module.exports = (io) => {
     //index.html
     io.of('/index').on('connection',(socket) => {
-        require('./index.socket.js')(socket);
+        global.index_socket = socket;   //先设置全局
+        //require('./index.socket.js')(socket);
     });
 
     //doorList.html
     io.of('/doorList').on('connection',(socket) => {
-        require('./doorList.socket.js')(socket);
+        global.doorList_socket = socket;
+        socket_doorList.socketFromHttpClient(socket);
+        //socket_doorList.socketFromHttpClient(socket);
     });
 };
 
