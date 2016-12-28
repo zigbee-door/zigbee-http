@@ -81,7 +81,7 @@ npm start   //本地环境,其他环境查看package.json
 | 类型      |     说明 |
 | :-------- | :--------|
 | redis发布订阅    |  在Redis中，一旦一个client发出了SUBSCRIBE命令，它就处于监听的模式，此时除了SUBSCRIBE， PSUBSCRIBE，UNSUBSCRIBE，PUNSUBSCRIBE这4条命令之外的所有其它命令都不能用，所以需要使用两个client. |
-| event事件   |  不知什么原因导致了监听器建立了多个，所以socket发送给客户端的redis数据（来自于tcp服务端）重复了好多次，所以去掉了事件触发，采用全局变量socket通信对象的方式 |
+| event事件   |  不知什么原因导致了监听器建立了多个，所以socket发送给客户端的redis数据（来自于tcp服务端）重复了好多次，所以去掉了事件触发，采用全局变量socket通信对象的方式，追加原因：每次页面刷新会导致执行sockets-> index.js触发页面的socket的connection事件，在事件里添加了监听函数....socket并不是一直长连着的，socket可能断开重连 |
 
 
 ## 进度记录
