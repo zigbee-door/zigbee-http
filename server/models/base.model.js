@@ -10,7 +10,25 @@ const mongoose = require('mongoose')
     , mongo_con = require('../constants/mongo.constant');
 
 
-var BaseSchema = new mongoose.Schema({
+/*基站下的门锁对象*/
+let DoorSchema = new mongoose.Schema({
+    //门锁网络地址
+    shortAddr: {
+        type:Number
+    },
+
+    //门锁房间号
+    doorNum: {
+        type:String,
+        default: ''
+    }
+});
+
+
+
+
+/*基站对象*/
+let BaseSchema = new mongoose.Schema({
     ip:{            //基站IP
         type:String,
         index:1,
@@ -38,10 +56,9 @@ var BaseSchema = new mongoose.Schema({
         require:true
     },
 
-    door_list: {     //门锁列表
-        type:Array
-    }
+    door_list: [DoorSchema]     //门锁列表
 });
+
 
 
 //发布Model

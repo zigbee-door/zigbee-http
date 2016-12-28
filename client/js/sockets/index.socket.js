@@ -10,9 +10,6 @@
 
     index.on('index', function (data) {     //index频道，和页面一样
 
-
-        console.log('1111');
-
         var $table = $('#baseTable'),
             base = JSON.parse(data),
             data = $table.bootstrapTable('getData'),
