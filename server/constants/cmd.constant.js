@@ -6,7 +6,8 @@
  */
 
 module.exports = {
-    get_door_list: 0x01     //获取门锁关联列表
+    get_door_list: 0x01,    //获取门锁关联列表
+    open_door:     0x02     //远程开门
 };
 
 

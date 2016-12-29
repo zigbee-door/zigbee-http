@@ -16,9 +16,14 @@ module.exports = {
     //     socket.emit(socket_con.index,socket_data);
     // });
 
+    //这里会报错，因为没有打开网页，基站的信息并不能主动推送到网页上！！！！
+
     /*接收来自于tcp服务器redis数据，通过socket发送给网页客户端*/
     socketSendToHttpClient(socket_data) {
-        global.index_socket.emit(socket_con.index,socket_data); //这里的socket使用了全局变量
+        //如果网页已经打开,socket已经建立连接则主动推送
+        if(global.index_socket) {
+            global.index_socket.emit(socket_con.index,socket_data); //这里的socket使用了全局变量
+        }
     }
 
 

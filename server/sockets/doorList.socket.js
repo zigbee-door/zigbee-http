@@ -43,9 +43,10 @@ module.exports =  {
     socketSendToHttpClient(socket_data) {
         let data = JSON.parse(socket_data);
         let Base = mongoose.model(mongo_con.Base);
-        let door_list = [];
+        let door_list = []; //如果没有关联列表，则删除所有关于door的信息，包括房间号、MAC地址和网络短地址
 
         data.status = httpStatus.success;
+
 
         switch(data.cmd) {
             case cmd_con.get_door_list:
@@ -54,29 +55,56 @@ module.exports =  {
                     let base = yield Base.findOne({ip:data.baseIP});
 
                     if(base) {
-                        for(let i=0,len=data.data.length/2; i<len; i++) {
+                        for(let i=0,len=data.data.length/10; i<len; i++) {
                             // base.door_list[i] = {
                             //     shortAddr: data.data[i] | (data.data[i+1] << 8)
                             // }
                             door_list[i] = {
-                                shortAddr: data.data[2*i] | (data.data[2*i + 1] << 8)
+                                shortAddr: data.data[10*i] | (data.data[10*i + 1] << 8),
+                                macAddr: data.data.slice(10*i+2,10*(i+1)),   //不包含10,20等
                             }
                         }
                     }
+
                     base.door_list = door_list;     //door_list是一个数组
                     base.time = String(moment().format('YYYY-MM-DD HH:mm:ss'));
                     yield base.save();              //数据库存储
                     doorList_socket.emit(socket_con.doorList,data);     //存储完毕以后在发送信息到客户端
-
                 });
 
                 break;
 
+            case cmd_con.open_door:
+
+                co(function *() {
+                    let base = yield Base.findOne({ip: data.baseIP});
+
+                    if (base) {
+                        for(let i=0,len=base.door_list.length;i<len;i++) {
+
+                            //如果门锁Id对应,则存储MAC地址
+                            if(base.door_list[i].shortAddr === (data.doorId[0] | (data.doorId[1] << 8))) {
+                                //mac地址
+                                base.door_list[i].macAddr = data.data.slice(0,8);       //不包含data.data[8]
+                                //lqi信号强度
+                                base.door_list[i].lqi = data.data[8];
+                                //电池电量百分比
+                                base.door_list[i].battery = parseInt((data.data[9] | data.data[10] << 8) * 100 /8191);
+                            }
+                        }
+
+
+                        base.time = String(moment().format('YYYY-MM-DD HH:mm:ss'));
+                        yield base.save();
+                        doorList_socket.emit(socket_con.doorList,data);     //存储完毕以后在发送信息到客户端
+                    }
+                });
+
+                break;
 
             default:
                 break;
         }
-
     }
 
 };

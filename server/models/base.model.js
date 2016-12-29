@@ -14,13 +14,32 @@ const mongoose = require('mongoose')
 let DoorSchema = new mongoose.Schema({
     //门锁网络地址
     shortAddr: {
-        type:Number
+        type:Number,
+        default:0x0000      //注意所有的值都给默认值
+    },
+
+    //门锁MAC地址
+    macAddr: {
+        type:Array,
+        default:[]
     },
 
     //门锁房间号
     doorNum: {
         type:String,
-        default: ''
+        default:'未设置'
+    },
+
+    //电池百分比
+    battery: {
+        type:Number,
+        default:0x0000
+    },
+
+    //信号强度
+    lqi: {
+        type:Number,
+        default:0x0000
     }
 });
 
@@ -33,7 +52,13 @@ let BaseSchema = new mongoose.Schema({
         type:String,
         index:1,
         unique:true,
-        require:true
+        require:true,
+        default:''
+    },
+
+    panId:{
+        type:String,
+        default:''
     },
 
     location:{       //地理位置

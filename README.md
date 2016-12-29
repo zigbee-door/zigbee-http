@@ -82,6 +82,8 @@ npm start   //本地环境,其他环境查看package.json
 | :-------- | :--------|
 | redis发布订阅    |  在Redis中，一旦一个client发出了SUBSCRIBE命令，它就处于监听的模式，此时除了SUBSCRIBE， PSUBSCRIBE，UNSUBSCRIBE，PUNSUBSCRIBE这4条命令之外的所有其它命令都不能用，所以需要使用两个client. |
 | event事件   |  不知什么原因导致了监听器建立了多个，所以socket发送给客户端的redis数据（来自于tcp服务端）重复了好多次，所以去掉了事件触发，采用全局变量socket通信对象的方式，追加原因：每次页面刷新会导致执行sockets-> index.js触发页面的socket的connection事件，在事件里添加了监听函数....socket并不是一直长连着的，socket可能断开重连 |
+| mongodb   | 数据库操作时，尽量给字段赋值默认值，这很重要 |
+
 
 
 ## 进度记录
@@ -95,7 +97,7 @@ npm start   //本地环境,其他环境查看package.json
 | 2016/12/26    |  添加了获取门锁关联列表页面 |
 | 2016/12/27    |  使用angular实现了控制器，并实现了socket不同的页面之间的连接，实现了redis发布，成功发布命令给tcp程序 |
 | 2016/12/28    |  可以发送命令给基站，并从基站获取数据显示到网页客户端，通过socket和redis实现，添加了开门命令，可以远程进行开门 |
-
+| 2016/12/29    |  远程开门得到反馈或者超时触发开门失败，更新了协议的实现，获取关联地址时获取了MAC地址和网络地址 |
 
 
 

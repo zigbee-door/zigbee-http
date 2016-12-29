@@ -44,35 +44,80 @@ module.exports = {
     getDoorAssociateList(req,res,next) {
         //console.log(req.params.ip);
         let arr = [];
+        let macArr = [];
         let Base = mongoose.model(mongo_con.Base);
 
         co(function* () {
             let base = yield Base.findOne({ip:req.params.ip});
-            if(base) {
-                // console.log(base.door_list.length);
+            if(base && base.door_list.length) {
+
                 for(let i=0,len=base.door_list.length;i<len;i++) {
 
-                    let shortAddr = base.door_list[i].shortAddr.toString(16).toUpperCase();
-                    shortAddr = '0x' + '0000'.substr(0,4-shortAddr.length) + shortAddr;    //十六进制前面没有的补上0
+                    let currentList = base.door_list[i];
+
+                    /*网络地址*/
+                    let shortAddr = currentList.shortAddr.toString(16).toUpperCase();
+                    shortAddr =  '0000'.substr(0,4-shortAddr.length) + shortAddr;    //十六进制前面没有的补上0
+
+                    /*mac地址*/
+                    let macAddr = '';
+
+                    for(let j=0,len=currentList.macAddr.length;j<len;j++) {
+                        macArr[j] =  currentList.macAddr[j].toString(16).toUpperCase();
+                        macArr[j] = '00'.substr(0,2-macArr[j].length) + macArr[j];
+                        macAddr += macArr[j];
+                    }
+
+
+                    // //开门后可以获取全部信息，可能没有开门获取电池、信号和MAC地址
+                    // if(base.door_list[i].battery && base.door_list[i].lqi &&　base.door_list.macAddr) {
+                    //     arr[i] = {
+                    //         ip  : base.ip,
+                    //         time: base.time,
+                    //         shortAddr: shortAddr,
+                    //         macAddr: macAddr,
+                    //         lqi: base.door_list[i].lqi,
+                    //         battery: base.door_list[i].battery,
+                    //     };
+                    // //第一次更新当前基站IP的门锁关联列表后获取网络地址和mac地址信息
+                    // } else {
+                    //     arr[i] = {
+                    //         ip  : base.ip,
+                    //         time: base.time,
+                    //         shortAddr: shortAddr,
+                    //         macAddr: macAddr
+                    //     }
+                    // }
 
 
                     arr[i] = {
-                        ip  : base.ip,
+                        //ip  : base.ip,
                         time: base.time,
-                        location: base.location,
                         shortAddr: shortAddr,
-                        doorNum: base.door_list[i].doorNum
-                    }
+                        macAddr: macAddr,
+                        lqi: currentList.lqi,
+                        battery: currentList.battery,
+                        doorNum: currentList.doorNum
+                    };
+
+
                 }
 
                 res.json(arr);
-
 
             } else {
                 res.json({});   //返回空数据
             }
 
         });
+    },
 
-    }
+    /**
+     * describe: 设置门锁房间号
+     * data:     16.12.29
+     * author:   zhuxiankang
+     * parm:     req,res,next
+     */
+
+
 };

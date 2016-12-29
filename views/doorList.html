@@ -9,7 +9,7 @@
     <title>无线门禁系统主页</title>
 </head>
 <body>
-    <div id="wrapper" class="doorList">
+    <div id="wrapper" class="doorList" ng-app="webapp" ng-controller="doorListController">
         <!-- 导航 -->
         <%- include nav.html %>
 
@@ -21,7 +21,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-default" ng-app="webapp" ng-controller="doorListController">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     门锁关联列表
                 </div>
@@ -37,6 +37,12 @@
                                 </select>
                             </div>
                             <button id="doorList_update" ng-click="updateRequest()" ng-bind="updateDoorList" class="{{updateDoorListClass}}"></button>
+
+                            <div class="input-group">
+                                <li style="padding: 0 15px"  class="list-group-item list-group-item-danger">电量和信号如果为0,请执行开门获取!</li>
+                            </div>
+
+
                         </div>
                     </div>
                     <table id="doorListTable"
@@ -57,20 +63,67 @@
                         <thead>
                         <tr>
                             <th data-field="state" data-checkbox="true"></th>
-                            <th data-field="ip" data-align="center">基站IP</th>
-                            <th data-field="location" data-align="center">基站位置</th>
-                            <th data-field="doorNum" data-align="center">门锁房间号</th>
-                            <th data-field="battery" data-align="center">电池电量</th>
-                            <th data-field="rssi" data-align="center">信号强度</th>
-                            <th data-field="shortAddr" data-align="center">门锁网络地址</th>
+                            <th data-field="doorNum" data-align="center">房间号</th>
+                            <th data-field="battery" data-align="center">电量</th>
+                            <th data-field="lqi" data-align="center">信号</th>
+                            <th data-field="shortAddr" data-align="center">网络地址</th>
+                            <th data-field="macAddr" data-align="center">mac地址</th>
                             <th data-field="time" data-align="center">获取时间</th>
-                            <th data-field="operate" data-formatter="accountFormatter" data-events="accountEvents" data-align="center">门锁操作</th>
+                            <th data-field="openDoorOper" data-formatter="openDoorOperFormatter" data-events="openDoorOperEvents" data-align="center">开门</th>
+                            <th data-field="setDoorNum" data-formatter="setDoorNumFormatter" data-events="setDoorNumEvents" data-align="center">设置房间号</th>
                             <th data-field="operateResult" data-align="center">操作结果</th>
                         </tr>
                         </thead>
                     </table>
                 </div>
             </div>
+        </div>
+
+
+        <!----------------------------------模态框-------------------------------------->
+        <div class="modal fade" id="setDoorNum" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close"
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title">
+                            房间号设置
+                        </h4>
+                    </div>
+                    <form ng-submit="setDoorNum()" class="form-horizontal modal-body" role="form" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <ul class="list-group">
+                                <li  class="list-group-item list-group-item-success">
+                                    <p  class="list-group-item-text">基站IP</p>
+                                    <h4  id="doorList_baseIP" ng-bind="doorList_baseIP" class="list-group-item-heading"></h4>
+                                </li>
+                                <li  class="list-group-item list-group-item-success">
+                                    <p class="list-group-item-text">门锁原房间号</p>
+                                    <h4  id="doorList_doorNum" ng-bind="doorList_doorNum" class="list-group-item-heading"></h4>
+                                </li>
+                                <li  class="list-group-item list-group-item-success">
+                                    <p  class="list-group-item-text">门锁网络地址</p>
+                                    <h4 id="doorList_shortAddr" ng-bind="doorList_shortAddr" class="list-group-item-heading"></h4>
+                                </li>
+                            </ul>
+                            <div class="list-group">
+                                <label for="doorList_newDoorNum" class="control-label">门锁新房间号</label>
+                                <div>
+                                    <input ng-model="doorList_newDoorNum" id="doorList_newDoorNum" type="text" class="form-control" pattern="^[0-9a-zA-Z]{1,15}$" maxlength="16"  aria-describedby="sizing-addon1" autocomplete="off" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn  btn-success">设 置</button>
+                            <button type="button" class="btn   btn-warning" data-dismiss="modal">关 闭</button>
+                        </div>
+                    </form>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
         </div>
     </div>
 
