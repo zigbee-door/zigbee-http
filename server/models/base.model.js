@@ -32,14 +32,20 @@ let DoorSchema = new mongoose.Schema({
 
     //电池百分比
     battery: {
-        type:Number,
-        default:0x0000
+        type:String,
+        default:'0%'
     },
 
     //信号强度
     lqi: {
         type:Number,
         default:0x0000
+    },
+
+    //信息获取时间
+    infoTime: {
+        type:String,
+        default: String(moment().format('YYYY-MM-DD HH:mm:ss'))
     }
 });
 

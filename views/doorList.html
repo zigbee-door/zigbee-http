@@ -65,10 +65,10 @@
                             <th data-field="state" data-checkbox="true"></th>
                             <th data-field="doorNum" data-align="center">房间号</th>
                             <th data-field="battery" data-align="center">电量</th>
-                            <th data-field="lqi" data-align="center">信号</th>
+                            <th data-field="lqi" data-align="center">链路质量</th>
                             <th data-field="shortAddr" data-align="center">网络地址</th>
                             <th data-field="macAddr" data-align="center">mac地址</th>
-                            <th data-field="time" data-align="center">获取时间</th>
+                            <th data-field="infoTime" data-align="center">获取时间</th>
                             <th data-field="openDoorOper" data-formatter="openDoorOperFormatter" data-events="openDoorOperEvents" data-align="center">开门</th>
                             <th data-field="setDoorNum" data-formatter="setDoorNumFormatter" data-events="setDoorNumEvents" data-align="center">设置房间号</th>
                             <th data-field="operateResult" data-align="center">操作结果</th>
@@ -97,10 +97,6 @@
                     <form ng-submit="setDoorNum()" class="form-horizontal modal-body" role="form" enctype="multipart/form-data">
                         <div class="modal-body">
                             <ul class="list-group">
-                                <li  class="list-group-item list-group-item-success">
-                                    <p  class="list-group-item-text">基站IP</p>
-                                    <h4  id="doorList_baseIP" ng-bind="doorList_baseIP" class="list-group-item-heading"></h4>
-                                </li>
                                 <li  class="list-group-item list-group-item-success">
                                     <p class="list-group-item-text">门锁原房间号</p>
                                     <h4  id="doorList_doorNum" ng-bind="doorList_doorNum" class="list-group-item-heading"></h4>

@@ -23,6 +23,7 @@ function doorListController($scope,$timeout,doorListService){
     var doorList = io.connect('http://localhost:3000/doorList');    //socket.io 全局变量是唯一的
     var $btn = $('#doorList_update');           //更新按钮
     var $table = $('#doorListTable');           //table
+    var $select = $('#selectBaseIP');           //基站选择
 
     var httpStatus = {
         //common
@@ -86,6 +87,7 @@ function doorListController($scope,$timeout,doorListService){
                     (function(){
 
                         var shortAddr = (data.doorId[0] | data.doorId[1] << 8).toString(16).toUpperCase();
+                        shortAddr =  '0000'.substr(0,4-shortAddr.length) + shortAddr;
                         var doorListData = $table.bootstrapTable('getData');
                         var index;
                         var row = {};
@@ -98,8 +100,14 @@ function doorListController($scope,$timeout,doorListService){
                             }
                         }
 
+                        //更新表格数据
                         row.operateResult = openStatus.openSuccess;
+                        row.lqi = data.data[0];
+                        row.battery = String(parseInt((data.data[1] | data.data[2] << 8) * 100 /8191)) + '%';
+                        row.infoTime = data.infoTime;
 
+                        //注意row.operateResult在这里有更新表格，所以window.openDoorOperEvents
+                        //中的$timeout可以检测到这里row.operateResult的更新
                         $table.bootstrapTable('updateRow', {
                             index:index,
                             row: row
@@ -173,7 +181,7 @@ function doorListController($scope,$timeout,doorListService){
         });                                     //doorList是频道，频道和页面一样，发送更新基站的关联列表命令给http服务器
     };
 
-    /*门锁更新关联列表事件，通过angular的ajax封装函数获取*/
+    /*设置房间号，通过angular的ajax封装函数获取*/
     $scope.setDoorNum = function() {
         doorListService.setDoorNum();
     };
@@ -185,23 +193,28 @@ function doorListController($scope,$timeout,doorListService){
     //开门按钮事件,通过socket.io通信
     window.openDoorOperEvents = {
         'click .edit': function (e, value, row, index) {
+
+            //在开门的时候先禁止其他事件，防止产生BUG和其他通信影响
+            $select.attr('disabled',"true");       //添加disabled属性
+            $btn.attr('disabled',"true");       //添加disabled属性
+
             //正在操作的时候不能继续开门操作，需要等动作结束
             if(row.operateResult === openStatus.openNone) {
                 var arr = [];
                 arr[0] = parseInt(row.shortAddr,16) & 0xFF;          //将十六进制转化为十进制,获取低8位
                 arr[1] = (parseInt(row.shortAddr,16) >> 8) & 0xFF;   //获取高8位
-                console.log(arr);
 
                 //发送开门命令
                 doorList.emit('doorList', {
-                    baseIP: row.ip,                     //发送的目标基站
+                    baseIP: $('#selectBaseIP').val(),                     //发送的目标基站
                     cmd:    cmd.openDoor,               //获取门锁关联列表命令ID
                     data:   [],                         //需要发送的数据无
                     doorId: arr                         //只是发送到基站的命令门锁Id设置为0x00,0x00
                 });
 
-                row.operateResult = openStatus.opening;
 
+                //更新了表格的条纹颜色状态和操作结果
+                row.operateResult = openStatus.opening;
                 $table.bootstrapTable('updateRow', {index: index, row: row});
 
                 $timeout(function(){
@@ -209,24 +222,31 @@ function doorListController($scope,$timeout,doorListService){
                     var timeout = 1000;
 
                     if(row.operateResult !== openStatus.openSuccess) {
-                        timeout = 3000;
+                        timeout = 2000;   //停顿两秒警告
                         row.operateResult = openStatus.openFail;
                         $table.bootstrapTable('updateRow', {index: index, row: row});
                     }
 
+                    //返回正常状态
                     $timeout(function(){
                         row.operateResult = openStatus.openNone;
                         $table.bootstrapTable('updateRow', {index: index, row: row});
+
+
+                        //打开其他事件
+                        $select.removeAttr('disabled',"true");       //添加disabled属性
+                        $btn.removeAttr('disabled',"true");       //添加disabled属性
+
                     },timeout)
 
-                },10000);
+
+                },6000);
             }
         }
     };
 
     window.setDoorNumEvents = {
         'click .edit': function (e, value, row, index) {
-
             // $scope.doorList_baseIP = row.ip;
             // $scope.doorList_doorNum = row.doorNum;
             // $scope.doorList_shortAddr = row.shortAddr;

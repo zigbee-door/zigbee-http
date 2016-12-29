@@ -92,7 +92,8 @@ module.exports = {
 
                     arr[i] = {
                         //ip  : base.ip,
-                        time: base.time,
+                        //注意，有些可能获取的是默认值，这很重要
+                        infoTime: currentList.infoTime,
                         shortAddr: shortAddr,
                         macAddr: macAddr,
                         lqi: currentList.lqi,
