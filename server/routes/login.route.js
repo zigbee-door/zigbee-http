@@ -4,6 +4,6 @@ const loginController = require('../controllers/login.controller')
 
 //router -> /login or /
 router.get('/',loginController.loginRender);
-router.post('/',loginController.loginAuthen);
-router.get('/logout',loginController.logout);
+router.post('/',loginController.loginAuthen);   //登录认证
+router.get('/logout',loginController.logout);   //注册
 module.exports = router;

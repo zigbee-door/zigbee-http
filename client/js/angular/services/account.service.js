@@ -1,9 +1,9 @@
 "use strict";
 
 angular.module("webapp")
-    .service("doorListService",["$http","$q",doorListService]);
+    .service("accountService",["$http","$q",accountService]);
 
-function doorListService($http,$q){
+function accountService($http,$q){
     function handlerRequest(method, url, data){
         var defered = $q.defer();   //声明延后执行，表示要去监控后面的执行
         var config = {
@@ -32,9 +32,9 @@ function doorListService($http,$q){
     }
 
     return{
-        //设置门锁房间号
-        setDoorNum:function(params){
-            return handlerRequest('POST','/doorList/setDoorNum',params);
+        //账号注册
+        register:function(params){
+            return handlerRequest('POST','/account/register',params);
         }
     }
 }

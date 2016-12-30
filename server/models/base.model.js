@@ -92,5 +92,11 @@ let BaseSchema = new mongoose.Schema({
 
 
 
+/*房间对象*/
+
+
+
+
+
 //发布Model
 let Base = mongoose.model(mongo_con.Base,BaseSchema);

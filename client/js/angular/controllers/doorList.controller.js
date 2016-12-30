@@ -190,7 +190,7 @@ function doorListController($scope,$timeout,doorListService){
 
     // -------------------------------------bootstrap-table图标事件---------------------------------------//
 
-    //开门按钮事件,通过socket.io通信
+    /*开门按钮事件,通过socket.io通信*/
     window.openDoorOperEvents = {
         'click .edit': function (e, value, row, index) {
 
@@ -240,7 +240,7 @@ function doorListController($scope,$timeout,doorListService){
                     },timeout)
 
 
-                },6000);
+                },10000);
             }
         }
     };

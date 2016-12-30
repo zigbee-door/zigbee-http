@@ -11,6 +11,7 @@ module.exports = {
     success:        'success',
     fail:           'fail'   ,
 
-    //register
-    user_exist:     'user_exist'    //用户已存在
+    //account.html account.controller.js
+    user_authFail:  'user_authFail',    //非管理员账号权限不够
+    user_exist:     'user_exist'        //用户已存在
 };

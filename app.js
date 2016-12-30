@@ -13,7 +13,6 @@ const express = require('express')
     , io = require('socket.io')(server);
 
 
-
 // mongoose,redis config init
 require('./config')();
 
@@ -38,7 +37,7 @@ app.use(expressSession({
 }));                      			//开启session
 app.use(express.static(path.join(__dirname, 'client')));
 
-// redirect
+// 登录账户验证，未登录时重定向redirect
 app.use((req,res,next) => {
   if(req.session.userid || req.originalUrl === '/' || req.originalUrl === '/login') {
     next();
@@ -56,7 +55,8 @@ for(let i in routes){
     app.use(route, require('./server/routes/'+ name));
   }
 }
-app.use('/', require('./server/routes/login.route'));
+
+app.use('/', require('./server/routes/login.route')); //主页同时也是登录页，可以同时使用/login和/路由
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

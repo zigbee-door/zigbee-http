@@ -16,7 +16,7 @@ module.exports = {
   Base: "Base",
 
   connect: '连接',        //连接
-  disconnect: '断开',    //断开
+  disconnect: '断开',     //断开
 
   position1: '虚拟连接',   //测试地址
   position2: '广C504'
