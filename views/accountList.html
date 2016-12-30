@@ -26,12 +26,12 @@
                 账号列表
             </div>
             <div class="panel-body">
-                <table id="table"
+                <table id="accountListTable"
                        data-toggle="table"
                        data-url="/accountList/accountTable"
                        data-cache="false"
                        data-height="526"
-                       data-row-style="rowStyle"
+                       data-row-style="accountListRowStyle"
                        data-sort-order="desc"
                        data-show-columns="true"
                        data-click-to-select="true"
@@ -49,7 +49,8 @@
                         <th data-field="username" data-align="center">用户名</th>
                         <th data-field="usertype" data-align="center" data-sortable="true">用户类型</th>
                         <th data-field="createTime" data-align="center" data-sortable="true">创建时间</th>
-                        <th data-field="operate" data-formatter="accountFormatter" data-events="accountEvents" data-align="center">账户操作</th>
+                        <th data-field="modifyAccount" data-formatter="modifyAccountFormatter" data-events="modifyAccountEvents" data-align="center">密码修改</th>
+                        <th data-field="deleteAccount" data-formatter="deleteAccountFormatter" data-events="deleteAccountEvents" data-align="center">账户删除</th>
                     </tr>
                     </thead>
                 </table>
@@ -59,7 +60,7 @@
 
     <!----------------------------------模态框-------------------------------------->
     <!----------账号修改（模态框）--------->
-    <div class="modal fade" id="modify" tabindex="-1" role="dialog"
+    <div class="modal fade" id="accountModify" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -72,32 +73,32 @@
                         密码修改
                     </h4>
                 </div>
-                <form ng-submit="modifyPsw()" class="form-horizontal modal-body" role="form" enctype="multipart/form-data">
+                <form ng-submit="accountListModify()" class="form-horizontal modal-body" role="form" enctype="multipart/form-data">
                     <div class="modal-body ">
                         <div class="list-group">
-                            <label for="userName" class="control-label">用户名</label>
+                            <label for="modifyUserName" class="control-label">用户名</label>
                             <div>
-                                <input id="userName" type="text" class="form-control" pattern="^[0-9a-zA-Z\u4e00-\u9fa5]{2,15}$" maxlength="16"  aria-describedby="sizing-addon1" autocomplete="off" required disabled>
+                                <input ng-model="modifyForm.username" id="modifyUserName" type="text" class="form-control" pattern="^[0-9a-zA-Z\u4e00-\u9fa5]{2,15}$" maxlength="16"  aria-describedby="sizing-addon1" autocomplete="off" required disabled>
                             </div>
                         </div>
                         <div class="list-group">
-                            <label for="userPassword" class="control-label">密码</label>
+                            <label for="modifyPassword" class="control-label">原密码</label>
                             <div>
-                                <input ng-focus="clearAlert()" ng-model="formDate.password" id="userPassword" type="password" class="form-control" pattern="^[0-9a-zA-Z]{1,15}$" maxlength="16"  aria-describedby="sizing-addon1" autocomplete="off" required>
+                                <input ng-focus="accountListModifyClear()" ng-model="modifyForm.password" id="modifyPassword" type="password" class="form-control" pattern="^[0-9a-zA-Z]{1,15}$" maxlength="16"  aria-describedby="sizing-addon1" autocomplete="off" required>
                             </div>
                         </div>
                         <div class="list-group">
-                            <label for="userNewPassword" class="control-label">新密码</label>
+                            <label for="modifyNewPassword" class="control-label">新密码</label>
                             <div>
-                                <input ng-focus=clearAlert() ng-model="formDate.newPassword" id="userNewPassword" type="password" class="form-control" pattern="^[0-9a-zA-Z]{1,15}$" maxlength="16"  aria-describedby="sizing-addon1" autocomplete="off" required>
+                                <input ng-focus=accountListModifyClear() ng-model="modifyForm.newPassword" id="modifyNewPassword" type="password" class="form-control" pattern="^[0-9a-zA-Z]{1,15}$" maxlength="16"  aria-describedby="sizing-addon1" autocomplete="off" required>
                             </div>
                         </div>
-                        <div id="msg" class="{{alertClass}}" role="alert">
-                            <p style="text-align: left"><i class="fa fa-angle-right fa-fw fa-lg"></i><span id="msg_text" ng-bind="msg"></span></p>
+                        <div id="modifyAlertMsgClass" class="{{modifyAlertClass}}" role="alert">
+                            <p style="text-align: left"><i class="fa fa-angle-right fa-fw fa-lg"></i><span id="modifyAlertMsg" ng-bind="modifyAlertMsg"></span></p>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn  btn-success">提交更改</button>
+                        <button id="modifyBtn" type="submit" class="btn  btn-success">提交更改</button>
                         <button type="button" class="btn   btn-warning" data-dismiss="modal">关 闭</button>
                     </div>
                 </form>
@@ -106,7 +107,7 @@
     </div>
 
     <!----------账号删除（模态框）--------->
-    <div class="modal fade" id="delete" tabindex="-1" role="dialog"
+    <div class="modal fade" id="accountDelete" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
@@ -119,35 +120,35 @@
                         账号注销
                     </h4>
                 </div>
-                <form ng-submit="deletePsw()" class="form-horizontal modal-body" role="form" enctype="multipart/form-data">
+                <form ng-submit="accountListDelete()" class="form-horizontal modal-body" role="form" enctype="multipart/form-data">
                     <div class="modal-body">
                         <ul class="list-group">
-                            <li  class="list-group-item list-group-item-danger">
+                            <li  class="list-group-item list-group-item-info">
                                 <p  class="list-group-item-text">用户名</p>
-                                <h4 id="d_userName" class="list-group-item-heading"></h4>
+                                <h4 ng-bind="deleteForm.deleteUsername" id="deleteUserName" class="list-group-item-heading"></h4>
                             </li>
-                            <li  class="list-group-item list-group-item-danger">
+                            <li  class="list-group-item list-group-item-info">
                                 <p class="list-group-item-text">用户类型</p>
-                                <h4 id="d_userType" class="list-group-item-heading">用户类型</h4>
+                                <h4 id="deleteUserType" class="list-group-item-heading"></h4>
                             </li>
-                            <li  class="list-group-item list-group-item-danger">
+                            <li  class="list-group-item list-group-item-info">
                                 <p  class="list-group-item-text">创建时间</p>
-                                <h4 id="d_createTime" class="list-group-item-heading">创建时间</h4>
+                                <h4 id="deleteCreateTime" class="list-group-item-heading"></h4>
                             </li>
                         </ul>
                         <div class="list-group">
-                            <label for="d_userPassword" class="control-label">管理员密码</label>
+                            <label for="deletePassword" class="control-label">当前登录的管理员密码</label>
                             <div>
-                                <input ng-focus="clearAlert1()" ng-model="formDate.adminPsw" id="d_userPassword" type="password" class="form-control" pattern="^[0-9a-zA-Z]{1,15}$" maxlength="16"  aria-describedby="sizing-addon1" autocomplete="off" required>
+                                <input ng-focus="accountListDeleteClear()" ng-model="deleteForm.adminPassword" id="deletePassword" type="password" class="form-control" pattern="^[0-9a-zA-Z]{1,15}$" maxlength="16"  aria-describedby="sizing-addon1" autocomplete="off" required>
                             </div>
                         </div>
 
-                        <div id="d_msg" class="{{d_alertClass}}" role="alert">
-                            <p style="text-align: left"><i class="fa fa-angle-right fa-fw fa-lg"></i><span id="d_msg_text" ng-bind="d_msg"></span></p>
+                        <div id="deleteAlertMsgClass" class="{{deleteAlertClass}}" role="alert">
+                            <p style="text-align: left"><i class="fa fa-angle-right fa-fw fa-lg"></i><span id="deleteAlertMsg" ng-bind="deleteAlertMsg"></span></p>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn  btn-success">删 除</button>
+                        <button id="deleteBtn" type="submit" class="btn  btn-success">删 除</button>
                         <button type="button" class="btn   btn-warning" data-dismiss="modal">关 闭</button>
                     </div>
                 </form>
@@ -164,8 +165,8 @@
 <script src="/lib/angular/angular.min.js"></script>
 <!--own angularjs-->
 <script src="/js/angular/webapp.js"></script>
-<script src="/js/angular/services/account.service.js"></script>
-<script src="/js/angular/controllers/account.controller.js"></script>
+<script src="/js/angular/services/accountList.service.js"></script>
+<script src="/js/angular/controllers/accountList.controller.js"></script>
 
 </body>
 </html>

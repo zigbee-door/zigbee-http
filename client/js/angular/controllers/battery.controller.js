@@ -2,6 +2,9 @@
 
 webappChart.controller('batteryLine',['$scope',batteryLine]);
 
+//battery.html
+
+
 function batteryLine($scope) {
     $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
     $scope.series = ['Series A'];

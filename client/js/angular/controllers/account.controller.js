@@ -4,6 +4,9 @@ angular.module("webapp")
     .controller('accountController',['$scope','accountService',accountController]);
 
 
+//account.html
+
+
 function accountController($scope,accountService){
 
     // ---------------------------doorListController函数局部变量-------------------------------//

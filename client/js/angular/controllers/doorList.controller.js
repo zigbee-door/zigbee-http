@@ -4,6 +4,8 @@ angular.module("webapp")
     .controller('doorListController',['$scope','$timeout','doorListService',doorListController]);
 
 
+//doorList.html
+
 // ---------------------doorList.html全局变量-----------------------------//
 
 var openStatus = {
