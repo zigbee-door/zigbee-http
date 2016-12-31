@@ -126,13 +126,15 @@ function accountListController($scope,$timeout,accountListService){
 
 
                     //$table.bootstrapTable('remove',{field:})
-                    var username = $.map($table.bootstrapTable('getSelections'), function (row) {
-                        return row.username;
-                    });
+                    // var username = $.map($table.bootstrapTable('getSelections'), function (row) {
+                    //     return row.username;
+                    // });
+
+                    // console.log(username);
 
                     $table.bootstrapTable('remove', {
                         field: 'username',
-                        values: username
+                        values: [$scope.deleteForm.deleteUserName]       //这里是数组就可以了
                     });
 
                     $timeout(function(){
