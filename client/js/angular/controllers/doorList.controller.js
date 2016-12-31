@@ -44,8 +44,10 @@ function doorListController($scope,$timeout,doorListService){
         initClass: 'btn btn-warning',
         listUpateing: '正在更新门锁关联列表,请稍后...',  //该状态是正在请求基站数据
         listUpateingClass: 'btn btn-danger',
-        listShowing: '正在显示列表数据,请稍后...',
-        baseListNull: '当前基站IP的列表为空!',
+        listShowing: '获取列表消息成功!',
+        //baseListNull：其实是基站没有了列表数据,这里仍然沿用之前的基站列表信息，
+        //一旦基站重新连接了那些旧的已经连接过的门锁，那么消息仍然可以恢复
+        baseListNull: '没有获取到最新的列表消息!',
         baseError: '断开连接,请连接后尝试!'
     };
 

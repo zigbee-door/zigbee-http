@@ -107,7 +107,7 @@ module.exports = {
                 res.json(arr);
 
             } else {
-                res.json({});   //返回空数据
+                res.json([]);   //返回空数据
             }
 
         });

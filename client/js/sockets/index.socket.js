@@ -42,5 +42,5 @@
     index.on('error', function(){
         index.connect();
     });
-    
+
 })();
