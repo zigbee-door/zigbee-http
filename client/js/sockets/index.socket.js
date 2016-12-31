@@ -8,10 +8,9 @@
         console.log('connect');
     });
 
-    index.on('index', function (data) {     //index频道，和页面一样
+    index.on('index', function (base) {     //index频道，和页面一样
 
         var $table = $('#baseTable'),
-            base = JSON.parse(data),
             data = $table.bootstrapTable('getData'),
             index = -1;
 
@@ -43,7 +42,5 @@
     index.on('error', function(){
         index.connect();
     });
-
-
-
+    
 })();

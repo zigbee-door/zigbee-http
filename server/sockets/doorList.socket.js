@@ -15,7 +15,13 @@ const socket_con = require('../constants/socket.constant')
 
 module.exports =  {
 
-    /*接收来自于网页客户端的socket通信数据*/
+
+    /**
+     * describe: 接收来自于网页客户端的socket通信数据
+     * data:     16.12.26
+     * author:   zhuxiankang
+     * parm:     socket ->　socket.io通信对象
+     */
     socketFromHttpClient(socket) {
         socket.on(socket_con.doorList,  (data) => {     //监听doorList页面的命令请求
 
@@ -39,151 +45,167 @@ module.exports =  {
         });
     },
 
-    /*接收来自于tcp服务器redis数据，通过socket告诉网页客户端可以来显示数据*/
+
+    /**
+     * describe: 接收来自于tcp服务器redis数据，通过socket告诉网页客户端可以来显示数据
+     * data:     16.12.26
+     * author:   zhuxiankang
+     * parm:     socket ->　socket.io通信对象
+     */
     socketSendToHttpClient(socket_data) {
         let data = JSON.parse(socket_data);
         let Base = mongoose.model(mongo_con.Base);
         let door_list = []; //如果没有关联列表，则删除所有关于door的信息，包括房间号、MAC地址和网络短地址
 
-        data.status = httpStatus.success;
+        /*1.如果tcp服务的基站断开连接*/
+        if((data.data[0] === 0x01) && (data.data[1] === 0xFF)) {
+            data.status = httpStatus.base_disconnect;
+            doorList_socket.emit(socket_con.doorList,data); //直接发送数据给客户端
+        }
 
+        /*2.如果tcp服务的基站连接*/
+        else {
 
-        switch(data.cmd) {
-            case cmd_con.get_door_list:
+            data.status = httpStatus.success;
+            switch(data.cmd) {
+                /*获取门锁关联列表*/
+                case cmd_con.get_door_list:
 
-                co(function *() {
-                    let base = yield Base.findOne({ip:data.baseIP});
+                    co(function *() {
+                        let base = yield Base.findOne({ip:data.baseIP});
 
-                    if(base) {
-                        let currentList = base.door_list,
-                            infoTime = String(moment().format('YYYY-MM-DD HH:mm:ss'));
+                        if(base) {
+                            let currentList = base.door_list,
+                                infoTime = String(moment().format('YYYY-MM-DD HH:mm:ss'));
 
+                            //一把门锁的数据有10字节，所以除以10
+                            for(let i=0,len=data.data.length/10; i<len; i++) {
 
-                        // /*1.遍历数据库中的门锁*/
-                        // for(let j=0,len=currentList.length;j<len;j++) {
-                        //
-                        //     /*1.1 遍历上传的门锁数据*/
-                        //     for(let i=0,len=data.data.length/10; i<len; i++) {
-                        //
-                        //         let shorAddr = data.data[10*i] | (data.data[10*i + 1] << 8),
-                        //             macAddr = data.data.slice(10*i+2,10*(i+1));
-                        //
-                        //
-                        //
-                        //
-                        //
-                        //
-                        //
-                        //     }
-                        //
-                        //
-                        //
-                        //
-                        //
-                        // }
+                                let shorAddr = data.data[10*i] | (data.data[10*i + 1] << 8),
+                                    macAddr = data.data.slice(10*i+2,10*(i+1));
 
+                                /*1.如果数据库中有门锁关联列表数据*/
+                                if(currentList.length) {
+                                    /*1.1 查找MAC地址,因为网络地址可能变化*/
+                                    for(let j=0,len=currentList.length;j<len;j++) {
+                                        /*1.1.1 判断MAC地址是否相等,如果数据库存在，则更新当前数据库中的数据*/
+                                        if(currentList[j].macAddr.toString() === (macAddr.toString())) {
+                                            door_list[i] = {
+                                                shortAddr: shorAddr,
+                                                macAddr: macAddr,   //不包含10,20等
+                                                lqi: currentList[j].lqi,
+                                                battery: currentList[j].battery,
+                                                doorNum: currentList[j].doorNum,
+                                                infoTime: infoTime
+                                            };
 
-                        //一把门锁的数据有10字节，所以除以10
-                        for(let i=0,len=data.data.length/10; i<len; i++) {
-                            // base.door_list[i] = {
-                            //     shortAddr: data.data[i] | (data.data[i+1] << 8)
-                            // }
-
-                            //
-                            let shorAddr = data.data[10*i] | (data.data[10*i + 1] << 8),
-                                macAddr = data.data.slice(10*i+2,10*(i+1));
-
-                            /*1.如果数据库中有门锁关联列表数据*/
-                            if(currentList.length) {
-                                /*1.1 查找MAC地址,因为网络地址可能变化*/
-                                for(let j=0,len=currentList.length;j<len;j++) {
-                                    /*1.1.1 判断MAC地址是否相等,如果数据库存在，则更新当前数据库中的数据*/
-                                    if(currentList[j].macAddr.toString() === (macAddr.toString())) {
-                                        door_list[i] = {
-                                            shortAddr: shorAddr,
-                                            macAddr: macAddr,   //不包含10,20等
-                                            lqi: currentList[j].lqi,
-                                            battery: currentList[j].battery,
-                                            doorNum: currentList[j].doorNum,
-                                            infoTime: infoTime
-                                        };
-
-                                        break;  //跳出循环,继续判断下一个
-                                    }
-
-                                    /*1.1.2 如果没有找到MAC地址，说明这个是新添加的门锁*/
-                                    if(j == currentList.length-1) {
-
-                                        door_list[i] = {
-                                            shortAddr: shorAddr,
-                                            macAddr: macAddr,   //不包含10,20等
-                                            infoTime: infoTime
-                                            //其他使用默认字段
+                                            break;  //跳出循环,继续判断下一个
                                         }
+
+                                        /*1.1.2 如果没有找到MAC地址，说明这个是新添加的门锁*/
+                                        if(j == currentList.length-1) {
+
+                                            door_list[i] = {
+                                                shortAddr: shorAddr,
+                                                macAddr: macAddr,   //不包含10,20等
+                                                infoTime: infoTime
+                                                //其他使用默认字段
+                                            }
+                                        }
+
                                     }
-
                                 }
-                            }
 
+                                /*2.如果数据库中没有门锁关联列表数据*/
+                                else {
 
-                            /*2.如果数据库中没有门锁关联列表数据*/
-                            else {
-
-                                door_list[i] = {
-                                    shortAddr: shorAddr,
-                                    macAddr: macAddr,   //不包含10,20等
-                                    infoTime: infoTime
-                                    //其他使用默认字段
+                                    door_list[i] = {
+                                        shortAddr: shorAddr,
+                                        macAddr: macAddr,   //不包含10,20等
+                                        infoTime: infoTime
+                                        //其他使用默认字段
+                                    }
                                 }
-                            }
 
 
 
-                        }
-                    }
-
-                    base.door_list = door_list;     //door_list是一个数组
-                    yield base.save();              //数据库存储
-                    doorList_socket.emit(socket_con.doorList,data);     //存储完毕以后在发送信息到客户端
-                });
-
-                break;
-
-            case cmd_con.open_door:
-
-                co(function *() {
-                    let base = yield Base.findOne({ip: data.baseIP});
-
-                    if (base) {
-                        for(let i=0,len=base.door_list.length;i<len;i++) {
-
-                            //如果门锁Id对应,则信号强度和电量百分比等
-                            if(base.door_list[i].shortAddr === (data.doorId[0] | (data.doorId[1] << 8))) {
-                                //lqi信号强度
-                                base.door_list[i].lqi = data.data[0];
-                                //电池电量百分比
-                                base.door_list[i].battery = String(parseInt((data.data[1] | data.data[2] << 8) * 100 /8191)) + '%';
-                                //时间
-                                base.door_list[i].infoTime = String(moment().format('YYYY-MM-DD HH:mm:ss'));
-                                //用于table立即显示时间
-                                data.infoTime =base.door_list[i].infoTime;
                             }
                         }
 
-
-
-
-                        yield base.save();
+                        base.door_list = door_list;     //door_list是一个数组
+                        yield base.save();              //数据库存储
                         doorList_socket.emit(socket_con.doorList,data);     //存储完毕以后在发送信息到客户端
-                    }
-                });
+                    });
 
-                break;
+                    break;
 
-            default:
-                break;
+                /*远程开门*/
+                case cmd_con.open_door:
+
+                    co(function *() {
+                        let base = yield Base.findOne({ip: data.baseIP});
+
+                        if (base) {
+                            for(let i=0,len=base.door_list.length;i<len;i++) {
+
+                                //如果门锁Id对应,则信号强度和电量百分比等
+                                if(base.door_list[i].shortAddr === (data.doorId[0] | (data.doorId[1] << 8))) {
+                                    //lqi信号强度
+                                    base.door_list[i].lqi = data.data[0];
+                                    //电池电量百分比
+                                    base.door_list[i].battery = String(parseInt((data.data[1] | data.data[2] << 8) * 100 /8191)) + '%';
+                                    //时间
+                                    base.door_list[i].infoTime = String(moment().format('YYYY-MM-DD HH:mm:ss'));
+                                    //用于table立即显示时间
+                                    data.infoTime =base.door_list[i].infoTime;
+                                }
+                            }
+                            yield base.save();
+                            doorList_socket.emit(socket_con.doorList,data);     //存储完毕以后在发送信息到客户端
+                        }
+                    });
+
+                    break;
+
+                default:
+                    break;
+            }
+
+
+
         }
     }
 
 };
+
+
+
+/**
+ * describe: 门锁关联列表逻辑处理
+ * data:     16.12.31
+ * author:   zhuxiankang
+ * parm:     data -> 来自于tcp的redis数据
+ */
+
+function getDoorList(data) {
+
+
+
+}
+
+
+
+/**
+ * describe: 远程快门
+ * data:     16.12.31
+ * author:   zhuxiankang
+ * parm:     data -> 来自于tcp的redis数据
+ */
+function openDoor(data) {
+
+}
+
+
+
+
 

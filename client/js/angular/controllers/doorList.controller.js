@@ -29,8 +29,9 @@ function doorListController($scope,$timeout,doorListService){
 
     var httpStatus = {
         //common
-        success:        'success',
-        fail:           'fail'
+        success:            'success',
+        fail:               'fail',
+        base_disconnect:    'base_disconnect' //基站未连接
     };
 
     var cmd = {
@@ -45,7 +46,7 @@ function doorListController($scope,$timeout,doorListService){
         listUpateingClass: 'btn btn-danger',
         listShowing: '正在显示列表数据,请稍后...',
         baseListNull: '当前基站IP的列表为空!',
-        baseError: '基站已经断开连接,请连接后尝试!'
+        baseError: '断开连接,请连接后尝试!'
     };
 
 
@@ -125,9 +126,9 @@ function doorListController($scope,$timeout,doorListService){
             }
         }
 
-        //操作失败
-        else {
-            $btn.text(btnTip.baseError);
+        //基站断开连接
+        else if(data.status === httpStatus.base_disconnect) {
+            $btn.text('基站'+ data.baseIP +　btnTip.baseError);
         }
     });
 
@@ -181,6 +182,11 @@ function doorListController($scope,$timeout,doorListService){
             data:   [],                         //需要发送的数据无
             doorId: [0x00,0x00]                 //只是发送到基站的命令门锁Id设置为0x00,0x00
         });                                     //doorList是频道，频道和页面一样，发送更新基站的关联列表命令给http服务器
+
+
+
+
+
     };
 
     /*设置房间号，通过angular的ajax封装函数获取*/
