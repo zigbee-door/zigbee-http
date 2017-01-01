@@ -11,7 +11,8 @@ const socket_con = require('../constants/socket.constant')
     , httpStatus = require('../constants/httpStatus.constant')
     , redis_con = require('../constants/redis.constant')
     , cmd_con =require('../constants/cmd.constant')
-    , moment = require('moment');
+    , moment = require('moment')
+    , coRedis = require('co-redis')(global.redis_pub);
 
 module.exports =  {
 
@@ -25,21 +26,35 @@ module.exports =  {
     socketFromHttpClient(socket) {
         socket.on(socket_con.doorList,  (socket_data) => {     //监听doorList页面的命令请求
 
-            let Base = mongoose.model(mongo_con.Base);
+            // redis_pub.get(redis_con.timetamp,(err,timetamp) => {
+            //     if(err) {
+            //         console.log(err)
+            //     }
+            // })
 
 
-            /*判断基站是否存活*/
             co(function *(){
-                //console.log(data.baseIP);
-                let base = yield Base.findOne({ip:socket_data.baseIP});
 
-                //基站存活
-                if(base && base.status === '连接') {
-                    require('../pubs/doorList.pub')(socket_data);
-                    //socket.emit(socket_con.doorList, {status:httpStatus.fail});
-                    //基站不存活或者基站不存在
+                let Base = mongoose.model(mongo_con.Base);
+                let timetamp = yield coRedis.get(redis_con.timetamp);
+
+                /*1. tcp进程存活*/
+                if(new Date().valueOf() - timetamp <= redis_con.timetampValue) {
+
+                    let base = yield Base.findOne({ip:socket_data.baseIP});
+                    /*1.1 基站存活*/
+                    if(base && base.status === '连接') {
+                        require('../pubs/doorList.pub')(socket_data);
+
+                    /*1.2 基站挂了*/
+                    } else {
+                        socket_data.status = httpStatus.base_disconnect;
+                        socket.emit(socket_con.doorList, socket_data);
+                    }
+
+                /*2. tcp进程挂了*/
                 } else {
-                    socket_data.status = httpStatus.base_disconnect;
+                    socket_data.status = httpStatus.tcp_disconnect;
                     socket.emit(socket_con.doorList, socket_data);
                 }
             });

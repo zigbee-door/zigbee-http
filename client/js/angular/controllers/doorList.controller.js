@@ -31,7 +31,8 @@ function doorListController($scope,$timeout,doorListService){
         //common
         success:            'success',
         fail:               'fail',
-        base_disconnect:    'base_disconnect' //基站未连接
+        base_disconnect:    'base_disconnect', //基站未连接
+        tcp_disconnect:     'tcp_disconnect'   //tcp进程挂了
     };
 
     var cmd = {
@@ -48,7 +49,8 @@ function doorListController($scope,$timeout,doorListService){
         //baseListNull：其实是基站没有了列表数据,这里仍然沿用之前的基站列表信息，
         //一旦基站重新连接了那些旧的已经连接过的门锁，那么消息仍然可以恢复
         baseListNull: '没有获取到最新的列表消息!',
-        baseError: '断开连接,请连接后尝试!'
+        baseError: '断开连接,请连接后尝试!',
+        tcpError: '通讯软件未打开!'
     };
 
 
@@ -131,6 +133,9 @@ function doorListController($scope,$timeout,doorListService){
         //基站断开连接
         else if(data.status === httpStatus.base_disconnect) {
             $btn.text('基站'+ data.baseIP +　btnTip.baseError);
+        //tcp进程挂了
+        } else if(data.status === httpStatus.tcp_disconnect) {
+            $btn.text(btnTip.tcpError);
         }
     });
 

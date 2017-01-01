@@ -10,7 +10,8 @@ const redis_con = require('../constants/redis.constant')
     , moment = require('moment')
     , co = require('co')
     , mongo_con = require('../constants/mongo.constant')
-    , mongoose = require('mongoose');
+    , mongoose = require('mongoose')
+    , httpStatus = require('../constants/httpStatus.constant');
 
 
 module.exports = {
@@ -54,9 +55,9 @@ module.exports = {
             }
         });
 
+        base.httpStatus = httpStatus.baseInfo_success;
 
-
-        //如果网页已经打开,socket已经建立连接则主动推送
+        //如果网页已经打开,socket已经建立连接则主动推送，需要注意的是global.index_socket必须在连接之后才会有，所以最好有if判断
         if(global.index_socket) {
             global.index_socket.emit(socket_con.index,base); //这里的socket使用了全局变量
         }

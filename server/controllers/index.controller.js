@@ -1,7 +1,11 @@
 
 const co = require('co')
     , mongoose = require('mongoose')
-    , mongo_con = require('../constants/mongo.constant');
+    , mongo_con = require('../constants/mongo.constant')
+    , coRedis = require('co-redis')(redis_pub)
+    , redis_con = require('../constants/redis.constant')
+    , moment = require('moment')
+    , httpStatus = require('../constants/httpStatus.constant');
 
 
 module.exports = {
@@ -28,42 +32,32 @@ module.exports = {
         let Base = mongoose.model(mongo_con.Base);
 
         co(function* () {
-            let bases = yield Base.find({});
-            if(bases) {
-                res.json(bases);
-                // 发送示例
-                // [
-                //     {
-                //         "_id":"584814806a3265043c184d07",
-                //         "ip":"10.8.208.222",
-                //         "__v":20,
-                //         "door_list":
-                //             [
-                //                 {
-                //                     "shortAddr":2904,
-                //                     "_id":"58639b527420cc16e079b4bd"
-                //                 },
-                //                 {
-                //                     "shortAddr":56075,
-                //                     "_id":"58639b527420cc16e079b4bc"
-                //                 }
-                //             ],
-                //         "time":"2016-12-28 18:54:53",
-                //         "status":"连接","location":"广C504"
-                //     },
-                //     {
-                //         "_id":"584814ccc979ce14d85f319e",
-                //         "ip":"10.8.208.111",
-                //         "__v":0,
-                //         "door_list":[],
-                //         "time":"2016-12-28 18:47:41",
-                //         "status":"连接",
-                //         "location":"广C504"
-                //     }
-                // ]
 
+            let timetamp = yield coRedis.get(redis_con.timetamp);
+            let bases = yield Base.find({});
+
+            /*1.tcp进程挂了*/
+            if(new Date().valueOf() - timetamp >= redis_con.timetampValue) {
+                /*1.1 如果基站有数据*/
+                if(bases && bases.length) {
+                    for(let i=0,len=bases.length; i<len; i++) {
+                        bases[i].status = mongo_con.disconnect;
+                        bases[i].time = String(moment().format('YYYY-MM-DD HH:mm:ss'))
+                        yield bases[i].save();
+                    }
+                    res.json(bases);
+                /*1.2 如果基站无数据*/
+                } else {
+                    res.json([]);
+                }
+            /*2.tcp进程没挂*/
             } else {
-                res.json({});
+                /*2.1 如果基站有数据*/
+                if(bases && bases.length) {
+                    res.json(bases);
+                } else {
+                    res.json({});
+                }
             }
         });
     }
