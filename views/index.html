@@ -48,7 +48,7 @@
                                 <th data-field="location" data-align="center">位置</th>
                                 <th data-field="status" data-align="center" data-sortable="true">状态</th>
                                 <th data-field="time" data-align="center">连接/断开时间</th>
-                                <th data-field="list" data-align="center">门锁列表</th>
+                                <th data-field="setting" data-formatter="settingFormatter" data-events="settingEvents" data-align="center">设置</th>
                             </tr>
                             </thead>
                         </table>
@@ -65,6 +65,16 @@
 
         <!-- bootstrap-table -->
         <script>
+
+            //基站设置
+            function settingFormatter(value, row, index) {
+                return [
+                    '<a class="edit ml10" href="javascript:void(0)" title="设置">',
+                    '<i class="fa fa-cog fa-fw fa-lg"></i>',
+                    '</a>'
+                ].join('');
+            }
+
             //表格条纹样式
             function baseRowStyle(row, index) {
                 var classes = ['success', 'warning'];

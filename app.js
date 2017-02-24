@@ -11,59 +11,55 @@ const express = require('express')
     , app = express()
     , server = http.createServer(app)
     , io = require('socket.io')(server);
-
 // mongoose,redis config init
 require('./config')();
-
-app.set('port', process.env.PORT || 3000);      //设置默认端口, 启动views
-// view engine setup
+//设置HTTP端口为3000, 启动views
+app.set('port', process.env.PORT || 3000);
+//view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('.html',ejs.__express);
 app.set('view engine', 'html');
-
 // uncomment after placing your favicon in /public
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser('MAGICString'));    //开启cookie
-app.use(expressSession({
+app.use(expressSession({                 // 开启session
   secret:'12345',
   name:'testapp',
-  // cookie: {maxAge: 300000 },  	//设置maxAge是300000ms，即300s后session和相应的cookie失效过期
-  resave: false,					//是指每次请求都重新设置session cookie，假设你的cookie是10分钟过期，每次请求都会再设置10分钟
-  saveUninitialized: true			//是指无论有没有session cookie，每次请求都设置个session cookie ，默认给个标示为 connect.sid
-}));                      			//开启session
+  //是指每次请求都重新设置session cookie
+  resave: false,
+  saveUninitialized: true
+}));
 app.use(express.static(path.join(__dirname, 'client')));
-
-// 登录账户验证，未登录时重定向redirect
+// 登录账户验证，未登录时重定向到登录页
 app.use((req,res,next) => {
   if(req.session.userid || req.originalUrl === '/' || req.originalUrl === '/login') {
     next();
   } else {
-    res.redirect('/');              //没有权限的理由暂时都重定向到登录页
+    //没有权限的路由都重定向到登录页
+    res.redirect('/');
   }
 });
-
 // router list
 var routes = fs.readdirSync('./server/routes');
 for(let i in routes){
   let name = routes[i].replace('.js','');
   let route = '/' + routes[i].split('.')[0];
-  if(name !== '.DS_Store'){   //MAC下需要注意屏蔽.DS_Store文件
+  //MAC OS X系统下需要注意屏蔽.DS_Store文件
+  if(name !== '.DS_Store'){
     app.use(route, require('./server/routes/'+ name));
   }
 }
-
-app.use('/', require('./server/routes/login.route')); //主页同时也是登录页，可以同时使用/login和/路由
-
+//主页同时也是登录页，可以同时使用/login和/路由
+app.use('/', require('./server/routes/login.route'));
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
-
 // error handlers
 // development error handler
 // will print stacktrace
@@ -77,7 +73,6 @@ if (app.get('env') === 'local') { //default development
     });
   });
 }
-
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
@@ -88,14 +83,10 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
-
 // socket.io
 require("./server/sockets")(io);
-
 // redis subscribe
 require("./server/subs")();
-
 // module.exports = app;
 // start http server
 server.listen(app.get('port'), function(){

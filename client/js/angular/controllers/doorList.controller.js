@@ -41,8 +41,8 @@ function doorListController($scope,$timeout,doorListService){
     };
 
     var btnTip = {
-        init: '更新当前基站IP的门锁关联列表',
-        initClass: 'btn btn-warning',
+        init: '更新门锁列表',
+        initClass: 'btn btn-success',
         listUpateing: '正在更新门锁关联列表,请稍后...',  //该状态是正在请求基站数据
         listUpateingClass: 'btn btn-danger',
         listShowing: '获取列表消息成功!',
@@ -306,7 +306,7 @@ function setDoorNumFormatter(value, row, index) {
 function doorListRowStyle(row, index) {
     var classes = ['default','success', 'warning','danger'];
 
-    if(row.operateResult === openStatus.opening){
+    if(row.operateResult === openStatus.opening || row.battery.split('%')[0] < 50){
         return {
             classes: classes[2]
         };
