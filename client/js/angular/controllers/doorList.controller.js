@@ -219,6 +219,8 @@ function doorListController($scope,$timeout,doorListService){
                 arr[0] = parseInt(row.shortAddr,16) & 0xFF;          //将十六进制转化为十进制,获取低8位
                 arr[1] = (parseInt(row.shortAddr,16) >> 8) & 0xFF;   //获取高8位
 
+                /*socket.io手机不适用*/
+
                 //发送开门命令
                 doorList.emit('doorList', {
                     baseIP: $('#selectBaseIP').val(),                     //发送的目标基站
@@ -226,7 +228,6 @@ function doorListController($scope,$timeout,doorListService){
                     data:   [],                         //需要发送的数据无
                     doorId: arr                         //只是发送到基站的命令门锁Id设置为0x00,0x00
                 });
-
 
                 //更新了表格的条纹颜色状态和操作结果
                 row.operateResult = openStatus.opening;
@@ -253,12 +254,19 @@ function doorListController($scope,$timeout,doorListService){
                         $btn.removeAttr('disabled',"true");       //添加disabled属性
 
                     },timeout)
+                },7000);
 
 
-                },10000);
+                /*Ajax，手机适用*/
+
+
             }
         }
     };
+
+
+
+
 
     window.setDoorNumEvents = {
         'click .edit': function (e, value, row, index) {

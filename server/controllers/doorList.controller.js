@@ -104,13 +104,13 @@ module.exports = {
 
                 }
 
-                //伪造数据
-                arr[0].doorNum = 503;
-                arr[0].operateResult = '正常';
-                arr[0].battery = '79%';
-
-                arr[1].doorNum = 504;
-                arr[1].operateResult = '低电压';
+                // //伪造数据
+                // arr[0].doorNum = 503;
+                // arr[0].operateResult = '正常';
+                // arr[0].battery = '79%';
+                //
+                // arr[1].doorNum = 504;
+                // arr[1].operateResult = '低电压';
 
 
                 res.json(arr);
